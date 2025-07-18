@@ -133,19 +133,26 @@ const Navbar: React.FC = () => {
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            className="fixed inset-0 z-50 pt-24 px-6 "
+            // Hapus atau ganti `pt-24` dengan `top-0` atau `top-5` jika ingin sejajar dengan navbar
+            // Jika ingin menempel persis di bawah navbar utama saat terbuka, bisa gunakan `top-[calc(theme('spacing.5')+theme('spacing.12'))]` atau sesuaikan
+            // Untuk menempel ke atas layar: `className="fixed inset-0 z-50 px-6"`
+            // Atau untuk sedikit jarak dari atas: `className="fixed top-1/2 transform -translate-y-1/2 z-50 px-6"`
+            // Pilihan terbaik adalah `fixed inset-0 z-50 flex justify-center items-start pt-24 md:pt-0`
+            // ATAU untuk rapat ke atas, hapus `pt-24` dan biarkan posisi `motion.ul` yang mengatur
+            className="fixed inset-0 z-50 px-6" // Menghapus `pt-24` dan biarkan `motion.ul` yang mengatur posisinya
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
-            onClick={() => setIsOpen(false)}
+            onClick={() => setIsOpen(false)} // Menutup menu ketika area di luar menu diklik
           >
             <motion.ul
-              className="container mx-auto max-w-md"
+              className="container mx-auto max-w-md bg-gray-900/90 backdrop-blur-lg rounded-lg shadow-xl border border-white/10 p-6 mt-20" // Menambahkan `mt-20` atau nilai lain yang sesuai agar drawer muncul di bawah navbar
               variants={menuVariants}
               initial="closed"
               animate="open"
               exit="closed"
+              onClick={(e) => e.stopPropagation()} // Mencegah penutupan menu ketika item menu diklik
             >
               {navLinks.map((link) => (
                 <motion.li

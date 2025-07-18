@@ -172,17 +172,31 @@ const FilterButton = ({ active, onClick, children }: FilterButtonProps) => (
 
 const Projects = () => {
   const [filter, setFilter] = useState<"all" | "featured" | "web" | "mobile" | "ai">("all")
-  const [filteredProjects, setFilteredProjects] = useState<Project[]>(projectsData)
+  const [displayedProjects, setDisplayedProjects] = useState<Project[]>([])
+  const [showAll, setShowAll] = useState(false)
+  const [totalFilteredProjects, setTotalFilteredProjects] = useState<Project[]>([]);
+
+  // Konstanta untuk batas tampilan awal
+  const PROJECT_LIMIT = 3; 
 
   useEffect(() => {
+    let currentProjects: Project[] = [];
     if (filter === "all") {
-      setFilteredProjects(projectsData)
+      currentProjects = projectsData;
     } else if (filter === "featured") {
-      setFilteredProjects(projectsData.filter((project) => project.featured))
+      currentProjects = projectsData.filter((project) => project.featured);
     } else {
-      setFilteredProjects(projectsData.filter((project) => project.category === filter))
+      currentProjects = projectsData.filter((project) => project.category === filter);
     }
-  }, [filter])
+    setTotalFilteredProjects(currentProjects); 
+
+    if (!showAll) {
+      setDisplayedProjects(currentProjects.slice(0, PROJECT_LIMIT)); 
+    } else {
+      setDisplayedProjects(currentProjects);
+    }
+  }, [filter, showAll]);
+
 
   return (
     <section id="projects" className="w-full py-8 px-10 from-black to-gray-900 relative overflow-hidden">
@@ -231,29 +245,29 @@ const Projects = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
         >
-          <FilterButton active={filter === "all"} onClick={() => setFilter("all")}>All Projects</FilterButton>
-          <FilterButton active={filter === "featured"} onClick={() => setFilter("featured")}>Featured</FilterButton>
-          <FilterButton active={filter === "web"} onClick={() => setFilter("web")}>Web Development</FilterButton>
-          <FilterButton active={filter === "mobile"} onClick={() => setFilter("mobile")}>Mobile Apps</FilterButton>
-          <FilterButton active={filter === "ai"} onClick={() => setFilter("ai")}>AI & ML</FilterButton>
+          <FilterButton active={filter === "all"} onClick={() => {setFilter("all"); setShowAll(false);}}>All Projects</FilterButton>
+          <FilterButton active={filter === "featured"} onClick={() => {setFilter("featured"); setShowAll(false);}}>Featured</FilterButton>
+          <FilterButton active={filter === "web"} onClick={() => {setFilter("web"); setShowAll(false);}}>Web Development</FilterButton>
+          <FilterButton active={filter === "mobile"} onClick={() => {setFilter("mobile"); setShowAll(false);}}>Mobile Apps</FilterButton>
+          <FilterButton active={filter === "ai"} onClick={() => {setFilter("ai"); setShowAll(false);}}>AI & ML</FilterButton>
         </motion.div>
 
         <AnimatePresence mode="wait">
           <motion.div
-            key={filter}
+            key={filter + (showAll ? "all" : "limited")} 
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.5 }}
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
           >
-            {filteredProjects.map((project, index) => (
+            {displayedProjects.map((project, index) => (
               <ProjectCard key={project.id} project={project} index={index} />
             ))}
           </motion.div>
         </AnimatePresence>
 
-        {filteredProjects.length === 0 && (
+        {displayedProjects.length === 0 && (
           <motion.div
             className="text-center py-20"
             initial={{ opacity: 0 }}
@@ -270,21 +284,41 @@ const Projects = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.4 }}
         >
-          <motion.button
-            className="px-6 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-lg font-medium flex items-center gap-2"
-            whileHover={{
-              scale: 1.05,
-              boxShadow: "0 10px 25px -5px rgba(79, 70, 229, 0.4)",
-            }}
-            whileTap={{ scale: 0.95 }}
-          >
-            View All Projects
-            <FiExternalLink className="w-4 h-4" />
-          </motion.button>
+          {/* Tombol View All Projects hanya jika ada 4 atau lebih proyek dan belum dalam mode showAll */}
+          {totalFilteredProjects.length >= 4 && !showAll && (
+            <motion.button
+              onClick={() => setShowAll(true)}
+              className="px-6 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-lg font-medium flex items-center gap-2"
+              whileHover={{
+                scale: 1.05,
+                boxShadow: "0 10px 25px -5px rgba(79, 70, 229, 0.4)",
+              }}
+              whileTap={{ scale: 0.95 }}
+            >
+              View All Projects
+              <FiExternalLink className="w-4 h-4" />
+            </motion.button>
+          )}
+
+          {/* Tombol Show Less hanya jika semua proyek ditampilkan dan ada 4 atau lebih proyek total */}
+          {totalFilteredProjects.length >= 4 && showAll && (
+            <motion.button
+              onClick={() => setShowAll(false)}
+              className="px-6 py-3 bg-gradient-to-r from-gray-700 to-gray-800 text-white rounded-lg font-medium flex items-center gap-2"
+              whileHover={{
+                scale: 1.05,
+                boxShadow: "0 10px 25px -5px rgba(0,0,0,0.4)",
+              }}
+              whileTap={{ scale: 0.95 }}
+            >
+              Show Less
+              <FiCode className="w-4 h-4" /> 
+            </motion.button>
+          )}
         </motion.div>
       </div>
     </section>
   )
 }
 
-export default Projects
+export default Projects;

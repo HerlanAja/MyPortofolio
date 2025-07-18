@@ -50,13 +50,13 @@ export const projectsData: Project[] = [
   },
   {
     id: 4,
-    title: "Silahar - Daily Report System",
-    description: "A mobile application to record, manage, and monitor daily activity reports with photo upload, time input, and backend integration.",
-    image: silaharImage,
-    category: "mobile",
-    technologies: ["Flutter", "Express.js", "MySQL", "REST API"],
+    title: "MyProject - AI-Powered Task Management",
+    description: "An AI-driven task management system that automates task assignments and tracks progress using machine learning algorithms.",
+    image: "#", // Placeholder for image
+    category: "ai",
+    technologies: ["Python", "TensorFlow", "Flask", "PostgreSQL"],
     demoUrl: "#",
     githubUrl: "#",
-    featured: true
-  },
+    featured: false
+  }
 ];
