@@ -47,16 +47,5 @@ export const projectsData: Project[] = [
     demoUrl: "#",
     githubUrl: "#",
     featured: true
-  },
-  {
-    id: 4,
-    title: "MyProject - AI-Powered Task Management",
-    description: "An AI-driven task management system that automates task assignments and tracks progress using machine learning algorithms.",
-    image: "#", // Placeholder for image
-    category: "ai",
-    technologies: ["Python", "TensorFlow", "Flask", "PostgreSQL"],
-    demoUrl: "#",
-    githubUrl: "#",
-    featured: false
   }
 ];
