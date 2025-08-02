@@ -47,5 +47,16 @@ export const projectsData: Project[] = [
     demoUrl: "#",
     githubUrl: "#",
     featured: true
+  },
+  {
+    id: 4,
+    title: "AI Chatbot - Customer Support",
+    description: "An AI-powered chatbot for customer support, capable of handling inquiries, providing information, and assisting with common issues.",
+    image: "#",
+    category: "ai",
+    technologies: ["Python", "TensorFlow", "Flask"],
+    demoUrl: "#",
+    githubUrl: "#",
+    featured: false
   }
 ];
