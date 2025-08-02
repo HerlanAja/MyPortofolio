@@ -1,3 +1,5 @@
+import portfolioImage from "/src/assets/project/WebPortofolio.png";
+
 export interface BlogPost {
   id: string
   slug: string
@@ -30,7 +32,7 @@ Kesimpulannya, web portofolio adalah investasi jangka panjang untuk karier dan c
     date: "2 Agustus 2025",
     author: "Ujang Herlan",
     category: "Personal Branding",
-    imageUrl: "/src/assets/project/WebPortofolio.png",
+    imageUrl: portfolioImage,
     readTime: 4,
   },
 ]
