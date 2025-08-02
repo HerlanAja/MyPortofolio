@@ -1,10 +1,11 @@
 "use client"
 
 import { useState } from "react"
-// DIUBAH: Hapus Twitter & MessageCircle, karena kita akan pakai ikon SVG kustom
 import { Share2, Facebook, Linkedin, Copy, Check } from "lucide-react"
 
-// BARU: Komponen ikon kustom untuk X (Twitter)
+// --- Ikon Kustom ---
+
+// Ikon X (Twitter)
 const XIcon = (props: React.SVGProps<SVGSVGElement>) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -16,7 +17,7 @@ const XIcon = (props: React.SVGProps<SVGSVGElement>) => (
   </svg>
 )
 
-// BARU: Komponen ikon kustom untuk WhatsApp
+// Ikon WhatsApp
 const WhatsAppIcon = (props: React.SVGProps<SVGSVGElement>) => (
     <svg 
         xmlns="http://www.w3.org/2000/svg" 
@@ -28,6 +29,26 @@ const WhatsAppIcon = (props: React.SVGProps<SVGSVGElement>) => (
     </svg>
 );
 
+// BARU: Ikon Instagram
+const InstagramIcon = (props: React.SVGProps<SVGSVGElement>) => (
+    <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        {...props}
+    >
+        <rect width="20" height="20" x="2" y="2" rx="5" ry="5"></rect>
+        <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+        <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"></line>
+    </svg>
+);
+
+
+// --- Komponen Utama ---
 
 interface ShareButtonsProps {
   url: string
@@ -44,8 +65,7 @@ const ShareButtons = ({ url, title, description, showLabels = false, size = "sma
   const shareText = `${title} - ${description}`
   const encodedUrl = encodeURIComponent(url)
   const encodedText = encodeURIComponent(shareText)
-
-  // DIUBAH: Ganti 'twitter' menjadi 'x'. Link tetap sama karena domain intent masih twitter.com
+  
   const shareUrls = {
     whatsapp: `https://wa.me/?text=${encodedText}%20${encodedUrl}`,
     x: `https://twitter.com/intent/tweet?text=${encodedText}&url=${encodedUrl}`,
@@ -54,7 +74,12 @@ const ShareButtons = ({ url, title, description, showLabels = false, size = "sma
   }
 
   const handleShare = async (platform: string) => {
-    // ... (Logika handleShare tidak perlu diubah)
+    // BARU: Logika khusus untuk Instagram
+    if (platform === "instagram") {
+        alert("Untuk berbagi ke Instagram, salin tautan dan tempel di Story atau postingan Anda. Fitur berbagi langsung paling baik berfungsi dari ponsel.");
+        return;
+    }
+
     if (platform === "copy") {
       try {
         await navigator.clipboard.writeText(url)
@@ -62,14 +87,7 @@ const ShareButtons = ({ url, title, description, showLabels = false, size = "sma
         setTimeout(() => setCopied(false), 2000)
       } catch (err) {
         console.error("Failed to copy link:", err)
-        const textArea = document.createElement("textarea")
-        textArea.value = url
-        document.body.appendChild(textArea)
-        textArea.select()
-        document.execCommand("copy")
-        document.body.removeChild(textArea)
-        setCopied(true)
-        setTimeout(() => setCopied(false), 2000)
+        alert("Gagal menyalin tautan secara otomatis. Silakan salin secara manual.");
       }
       return
     }
@@ -99,7 +117,7 @@ const ShareButtons = ({ url, title, description, showLabels = false, size = "sma
   if (showLabels) {
     return (
       <div className="flex flex-wrap justify-center gap-3">
-        {/* DIUBAH: Ganti ikon WhatsApp */}
+        {/* Tombol WhatsApp */}
         <button
           onClick={() => handleShare("whatsapp")}
           className={`${buttonClass} bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors flex items-center gap-2 shadow-sm hover:shadow-md`}
@@ -108,15 +126,25 @@ const ShareButtons = ({ url, title, description, showLabels = false, size = "sma
           {showLabels && "WhatsApp"}
         </button>
 
-        {/* DIUBAH: Ganti Tombol Twitter menjadi X */}
+        {/* BARU: Tombol Instagram */}
+        <button
+            onClick={() => handleShare("instagram")}
+            className={`${buttonClass} bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 text-white rounded-lg transition-colors flex items-center gap-2 shadow-sm hover:shadow-md`}
+        >
+            <InstagramIcon className={iconClass} />
+            {showLabels && "Instagram"}
+        </button>
+
+        {/* Tombol X */}
         <button
           onClick={() => handleShare("x")}
           className={`${buttonClass} bg-black hover:bg-gray-800 text-white rounded-lg transition-colors flex items-center gap-2 shadow-sm hover:shadow-md`}
         >
           <XIcon className={iconClass} />
-          {/* {showLabels && "X"} */}
+           {showLabels && "X"}
         </button>
-
+        
+        {/* Tombol lainnya... */}
         <button
           onClick={() => handleShare("facebook")}
           className={`${buttonClass} bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors flex items-center gap-2 shadow-sm hover:shadow-md`}
@@ -124,8 +152,7 @@ const ShareButtons = ({ url, title, description, showLabels = false, size = "sma
           <Facebook className={iconClass} />
           {showLabels && "Facebook"}
         </button>
-
-        {/* ... sisa tombol sama ... */}
+        
         <button
           onClick={() => handleShare("linkedin")}
           className={`${buttonClass} bg-blue-700 hover:bg-blue-800 text-white rounded-lg transition-colors flex items-center gap-2 shadow-sm hover:shadow-md`}
@@ -169,11 +196,11 @@ const ShareButtons = ({ url, title, description, showLabels = false, size = "sma
           <div className="fixed inset-0 z-10" onClick={() => setShowDropdown(false)}></div>
           <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 z-20">
             <div className="py-1">
-              {/* DIUBAH: Ganti ikon WhatsApp di dropdown */}
+              {/* Tombol WhatsApp */}
               <button
                 onClick={() => {
-                  handleShare("whatsapp")
-                  setShowDropdown(false)
+                  handleShare("whatsapp");
+                  setShowDropdown(false);
                 }}
                 className="flex items-center gap-3 w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
               >
@@ -181,45 +208,55 @@ const ShareButtons = ({ url, title, description, showLabels = false, size = "sma
                 WhatsApp
               </button>
 
-              {/* DIUBAH: Ganti Tombol Twitter menjadi X di dropdown */}
+              {/* BARU: Tombol Instagram di dropdown */}
               <button
                 onClick={() => {
-                  handleShare("x")
-                  setShowDropdown(false)
+                  handleShare("instagram");
+                  setShowDropdown(false);
+                }}
+                className="flex items-center gap-3 w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+              >
+                <InstagramIcon className="w-4 h-4 text-pink-600" />
+                Instagram
+              </button>
+              
+              {/* Tombol X */}
+              <button
+                onClick={() => {
+                  handleShare("x");
+                  setShowDropdown(false);
                 }}
                 className="flex items-center gap-3 w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
               >
                 <XIcon className="w-4 h-4" />
                 X
               </button>
-
+              
+              {/* Tombol lainnya di dropdown... */}
               <button
                 onClick={() => {
-                  handleShare("facebook")
-                  setShowDropdown(false)
+                  handleShare("facebook");
+                  setShowDropdown(false);
                 }}
                 className="flex items-center gap-3 w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
               >
                 <Facebook className="w-4 h-4 text-blue-600" />
                 Facebook
               </button>
-              
-              {/* ... sisa tombol dropdown sama ... */}
               <button
                 onClick={() => {
-                  handleShare("linkedin")
-                  setShowDropdown(false)
+                  handleShare("linkedin");
+                  setShowDropdown(false);
                 }}
                 className="flex items-center gap-3 w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
               >
                 <Linkedin className="w-4 h-4 text-blue-700" />
                 LinkedIn
               </button>
-              
               <button
                 onClick={() => {
-                  handleShare("copy")
-                  setShowDropdown(false)
+                  handleShare("copy");
+                  setShowDropdown(false);
                 }}
                 className="flex items-center gap-3 w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
               >
