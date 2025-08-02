@@ -30,7 +30,7 @@ Kesimpulannya, web portofolio adalah investasi jangka panjang untuk karier dan c
     date: "2 Agustus 2025",
     author: "Ujang Herlan",
     category: "Personal Branding",
-    imageUrl: "/src/assets/project/WebPortofolio.png",
+    imageUrl: "https://buildwithangga.com/storage/assets/portfolio/pXyjLUVTzQxHkd0zsHgdOe33z5Ly11IAr62FTysl.png",
     readTime: 4,
   },
 ]
