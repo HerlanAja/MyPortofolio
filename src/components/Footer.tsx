@@ -11,7 +11,6 @@ import {
   FiMapPin,
   FiPhone,
   FiArrowRight,
-  FiHeart,
 } from "react-icons/fi"
 
 // Types
@@ -229,9 +228,6 @@ const Footer = () => {
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5, delay: 0.7 }}
           >
-            <span>Made with</span>
-            <FiHeart className="w-4 h-4 mx-1 text-red-500" />
-            <span>using ReactJS & Tailwind CSS</span>
           </motion.div>
         </div>
       </div>

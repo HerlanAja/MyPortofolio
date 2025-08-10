@@ -80,7 +80,7 @@ const HeroStats: React.FC = () => {
             <FaLinkedin className="cursor-pointer" />
           </motion.a>
           <motion.a
-            href="https://youtube.com/@yourchannel"
+            href="https://www.tiktok.com/@ujangherlan_"
             target="_blank"
             rel="noopener noreferrer"
             whileTap={{ scale: 0.85 }}

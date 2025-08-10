@@ -16,12 +16,20 @@ const HomePage: React.FC = () => {
     return () => clearTimeout(timer);
   }, []);
 
+  // Fungsi baru untuk menangani klik tombol "Explore My Work"
+  const handleExploreClick = () => {
+    const target = document.querySelector('#projects');
+    if (target) {
+      target.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <div>
       <ConcentricBackground />
       <Navbar />
 
-      <main id="home" className="relative pt-8 md:pt-12 px-4 sm:px-6 md:px-10 lg:px-16 xl:px-20 max-w-7xl mx-auto">
+      <main id="home" className="relative pt-24 md:pt-12 px-4 sm:px-6 md:px-10 lg:px-16 xl:px-20 max-w-7xl mx-auto">
         <div className="flex flex-col lg:flex-row items-center justify-between min-h-[60vh]">
           {/* Text Content */}
           <motion.section
@@ -39,17 +47,19 @@ const HomePage: React.FC = () => {
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
+              // Panggil fungsi handleExploreClick saat tombol diklik
+              onClick={handleExploreClick} 
               className="px-6 py-2 bg-gradient-to-r from-blue-600 to-blue-800 rounded-lg text-white font-medium shadow-lg hover:shadow-xl transition-all"
             >
               Explore My Work
             </motion.button>
           </motion.section>
 
-          {/* Image Section - Shifted 6 units to the right */}
+          {/* Image Section */}
           <motion.div
-            className="block w-full lg:w-1/2 relative z-10 mt-6 lg:mt-0 mr-6" // Added mr-6 here
+            className="block w-full lg:w-1/2 relative z-10 mt-6 lg:mt-0 mr-6"
             initial={{ opacity: 0, x: 50 }}
-            animate={{ opacity: 1, x: 24 }} // Changed to 24 (6 units in Tailwind: 6*4=24px)
+            animate={{ opacity: 1, x: 24 }}
             transition={{ duration: 1, delay: 0.3, ease: 'easeOut' }}
           >
             <div className="relative w-full h-full min-h-[250px] sm:min-h-[350px] flex justify-end items-center">
