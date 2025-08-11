@@ -1,20 +1,79 @@
-"use client"
+import { useParams, Link, Navigate } from "react-router-dom";
+import { blogPosts } from "../../constants/blog-post";
+import ShareButtons from "../../components/ShareButtons";
+import { ArrowLeft, Clock, User } from "lucide-react";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
-import { useParams, Link, Navigate } from "react-router-dom"
-import { blogPosts } from "../../constants/blog-post"
-import ShareButtons from "../../components/ShareButtons"
-import { ArrowLeft, Clock, User } from "lucide-react"
+// Tambahkan import type yang dibutuhkan dari react dan react-markdown
+import type { HTMLProps } from "react";
+import type { Components } from "react-markdown";
 
-// Font Plus Jakarta Sans akan diterapkan secara otomatis dari body
+// Definisi komponen kustom dengan tipe yang benar
+const components: Components = {
+  // Paragraf: Tambahkan class 'text-justify'
+  p: ({ children }) => <p className="mb-4 text-justify">{children}</p>,
+
+  // Tautan
+  a: (props) => (
+    <a
+      {...props as HTMLProps<HTMLAnchorElement>}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="text-blue-600 hover:text-blue-800 underline transition-colors"
+    />
+  ),
+
+  // Blockquote: Tambahkan padding lebih
+  blockquote: (props) => (
+    <blockquote
+      {...props as HTMLProps<HTMLQuoteElement>}
+      className="italic border-l-4 border-gray-300 pl-4 text-gray-700 my-6"
+    />
+  ),
+
+  // Unordered list: Ubah class untuk membuat menjorok
+  ul: (props) => (
+    <ul
+      {...props as HTMLProps<HTMLUListElement>}
+      className="list-disc list-outside ml-6 space-y-2 mb-4"
+    />
+  ),
+
+  // Ordered list: Ubah class untuk membuat menjorok
+  ol: (props) => (
+    <ol
+      {...props as React.ComponentProps<'ol'>}
+      className="list-decimal list-outside ml-6 space-y-2 mb-4"
+    />
+  ),
+
+  // Code block
+  pre: (props) => (
+    <pre
+      {...props as HTMLProps<HTMLPreElement>}
+      className="bg-gray-800 text-white p-4 rounded-md overflow-x-auto my-6"
+    />
+  ),
+
+  // Heading 2
+  h2: (props) => (
+    <h2
+      {...props as HTMLProps<HTMLHeadingElement>}
+      className="mt-8 mb-4 text-2xl font-bold"
+    />
+  ),
+};
+
 const BlogPostPage = () => {
-  const { slug } = useParams<{ slug: string }>()
-  const post = blogPosts.find((p) => p.slug === slug)
+  const { slug } = useParams<{ slug: string }>();
+  const post = blogPosts.find((p) => p.slug === slug);
 
   if (!post) {
-    return <Navigate to="/blog" replace />
+    return <Navigate to="/blog" replace />;
   }
 
-  const currentUrl = window.location.href
+  const currentUrl = window.location.href;
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -29,7 +88,6 @@ const BlogPostPage = () => {
               <ArrowLeft className="w-4 h-4" />
               Kembali ke Blog
             </Link>
-
             <ShareButtons url={currentUrl} title={post.title} description={post.excerpt} />
           </div>
         </div>
@@ -41,7 +99,7 @@ const BlogPostPage = () => {
           {/* Featured Image */}
           {post.imageUrl && (
             <div className="aspect-video relative overflow-hidden">
-              <img src={post.imageUrl || "/placeholder.svg"} alt={post.title} className="w-full h-full object-cover" />
+              <img src={post.imageUrl} alt={post.title} className="w-full h-full object-cover" />
             </div>
           )}
 
@@ -71,17 +129,16 @@ const BlogPostPage = () => {
               <time className="text-gray-500 text-sm font-medium">Dipublikasikan pada {post.date}</time>
             </header>
 
-            <div className="w-full h-px bg-gray-200 mb-8"></div>
+            <div className="w-full h-px bg-gray-200 my-8"></div>
 
-            {/* Article Content */}
+            {/* Article Content with Markdown */}
             <div className="prose prose-lg prose-gray max-w-none">
-              <div className="text-gray-700 leading-relaxed space-y-6">
-                {post.content.split("\n\n").map((paragraph, index) => (
-                  <p key={index} className="text-lg leading-8">
-                    {paragraph}
-                  </p>
-                ))}
-              </div>
+              <ReactMarkdown
+                components={components}
+                remarkPlugins={[remarkGfm]}
+              >
+                {post.content}
+              </ReactMarkdown>
             </div>
 
             <div className="w-full h-px bg-gray-200 my-8"></div>
@@ -116,7 +173,7 @@ const BlogPostPage = () => {
         </article>
       </main>
     </div>
-  )
-}
+  );
+};
 
-export default BlogPostPage
+export default BlogPostPage;
