@@ -1,6 +1,6 @@
 import portfolioImage from "/src/assets/project/WebPortofolio.png";
 import mangcodingImage from "/src/assets/project/MangcodingPKL.png"; 
-import codingImage from "D:/Ujang Herlan/Portofolio/MyPortofolio/src/assets/project/codingvsnocoding.jpg";
+import codingImage from "/src/assets/project/codingvsnocoding.jpg";
 
 export interface BlogPost {
   id: string;
