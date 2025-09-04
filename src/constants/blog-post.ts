@@ -1,5 +1,6 @@
 import portfolioImage from "/src/assets/project/WebPortofolio.png";
 import mangcodingImage from "/src/assets/project/MangcodingPKL.png"; 
+import codingImage from "D:/Ujang Herlan/Portofolio/MyPortofolio/src/assets/project/codingvsnocoding.jpg";
 
 export interface BlogPost {
   id: string;
@@ -32,7 +33,7 @@ Dengan web portofolio, Anda juga memiliki kendali penuh atas informasi yang ingi
 Kesimpulannya, web portofolio adalah investasi jangka panjang untuk karier dan citra diri. Mulailah membangunnya sedini mungkin, karena portofolio yang baik dapat membuka lebih banyak peluang di masa depan.`,
     date: "2 Agustus 2025",
     author: "Ujang Herlan",
-    category: "Personal Branding",
+    category: "Sharing Knowledge",
     imageUrl: portfolioImage,
     readTime: 4,
   },
@@ -65,4 +66,44 @@ Sekali lagi, saya menyampaikan apresiasi setinggi-tingginya kepada seluruh tim [
     imageUrl: mangcodingImage,
     readTime: 5,
   },
+  {
+    id: "3",
+    slug: "kapan-harus-menggunakan-coding-dalam-membangun-website",
+    title: "Kapan Harus Menggunakan Coding dalam Membangun Website?",
+    excerpt: "Di dunia kerja, saya menemukan banyak perusahaan yang masih mengandalkan WordPress. Lalu, kapan kita harus beralih ke coding?",
+    content: `Membangun website kini semakin mudah dengan beragam platform seperti WordPress, Wix, atau Squarespace yang menawarkan solusi tanpa perlu **coding** sama sekali. Pengalaman saya, bahkan di dunia kerja, ada banyak perusahaan yang masih mengandalkan WordPress untuk personal branding mereka. Lantas, kapan sih kita benar-benar harus menggunakan coding?
+
+---
+
+### Pengalaman di Dunia Kerja
+
+Selama berinteraksi dengan dunia profesional, saya menemukan banyak perusahaan, dari skala kecil hingga menengah, yang mengandalkan **WordPress** untuk membangun citra online mereka. Alasannya sederhana, **WordPress itu praktis, cepat, dan punya banyak fitur bawaan** yang cukup untuk kebutuhan dasar seperti blog, portofolio, atau website perusahaan.
+
+---
+
+### Lalu, Kapan Coding Diperlukan?
+
+Meskipun WordPress sangat andal, ada beberapa skenario di mana coding menjadi pilihan yang jauh lebih baik, bahkan mutlak dibutuhkan:
+
+1.  **Saat Kamu Butuh Fitur yang Sangat Spesifik dan Unik:** Plugin dan tema WordPress memang melimpah, tapi ada kalanya fitur yang kamu butuhkan tidak tersedia. Misalnya, kamu ingin membuat kalkulator biaya khusus yang terintegrasi dengan sistem internal perusahaan. Di sini, **mengembangkan fitur kustom dengan coding adalah satu-satunya solusi**.
+
+2.  **Saat Kamu Prioritaskan Performa Maksimal:** WordPress, dengan segala *plugin* dan temanya, kadang bisa jadi berat dan lambat. Jika website-mu adalah platform *e-commerce* dengan ribuan produk atau butuh kecepatan tinggi, **membangun dari nol dengan coding akan memberimu kendali penuh** untuk mengoptimalkan setiap baris kode, sehingga website lebih ringan dan cepat.
+
+3.  **Saat Kamu Ingin Desain yang Benar-Benar Unik:** Desain template WordPress memang bagus, tapi kalau kamu ingin tampilan yang benar-benar berbeda dari yang lain, template tersebut bisa membatasi kreativitas. Dengan coding (menggunakan **HTML**, **CSS**, dan **JavaScript**), kamu bisa menciptakan desain yang unik dan mencerminkan identitas merekmu secara maksimal.
+
+4.  **Saat Kamu Membangun Aplikasi Web yang Kompleks:** Website sederhana seperti blog bisa dibuat tanpa coding. Namun, jika kamu ingin membuat aplikasi web yang kompleks—seperti media sosial, forum interaktif, atau *marketplace*—**coding adalah hal yang mutlak diperlukan**. Kamu butuh *backend*, *database*, dan API untuk mengelola data dan menghubungkan berbagai komponen.
+
+### Kesimpulan
+
+> "Di dunia profesional, fleksibilitas itu kunci. Memahami kapan harus menggunakan WordPress dan kapan harus beralih ke coding akan membuatmu selangkah lebih maju."
+
+Pilihan antara menggunakan WordPress atau coding tergantung pada tujuan dan kebutuhan website-mu. Jika kamu butuh website yang cepat, mudah dikelola, dan tidak memerlukan banyak kustomisasi, WordPress adalah pilihan terbaik. Namun, jika kamu butuh fitur unik, performa maksimal, atau ingin membangun aplikasi web yang kompleks, **coding adalah investasi yang sangat berharga**.
+
+Semoga pengalaman ini bisa jadi panduan untuk teman-teman yang sedang bingung menentukan pilihan.`,
+    date: "4 September 2025",
+    author: "Ujang Herlan",
+    category: "Sharing Knowledge",
+    imageUrl: codingImage,
+    readTime: 8,
+}
 ];
