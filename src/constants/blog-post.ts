@@ -104,6 +104,6 @@ Semoga pengalaman ini bisa jadi panduan untuk teman-teman yang sedang bingung me
     author: "Ujang Herlan",
     category: "Sharing Knowledge",
     imageUrl: codingImage,
-    readTime: 8,
+    readTime: 10,
 }
 ];
