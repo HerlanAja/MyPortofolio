@@ -1,6 +1,19 @@
 import React, { useRef } from 'react';
 import { FaGithub, FaLinkedin, FaTiktok } from 'react-icons/fa';
-import { motion, useInView } from 'framer-motion';
+import { motion, useInView, useMotionValue, useTransform, animate } from 'framer-motion';
+
+// Komponen Counter untuk animasi angka naik
+const Counter = ({ from = 0, to }: { from?: number; to: number }) => {
+  const count = useMotionValue(from);
+  const rounded = useTransform(count, (latest) => Math.floor(latest));
+
+  React.useEffect(() => {
+    const controls = animate(count, to, { duration: 2, ease: "easeOut" });
+    return controls.stop;
+  }, [to]);
+
+  return <motion.span>{rounded}</motion.span>;
+};
 
 const HeroStats: React.FC = () => {
   const ref = useRef(null);
@@ -40,27 +53,30 @@ const HeroStats: React.FC = () => {
       </div>
 
       {/* Stats & Description */}
-      <div className="text-center lg:text-left w-full lg:w-1/2">
-        <p className="text-gray-300 mb-6 text-lg">
-          I dissect intricate user experience challenges to engineer integrity-focused solutions that resonate with billions of users.
+      <div className="w-full lg:w-1/2">
+        {/* Deskripsi kiri */}
+        <p className="text-gray-300 mb-6 text-lg text-left">
+          I work on improving user experiences by building solutions that are simple, trustworthy, and meaningful for many people.
         </p>
-        <div className="flex justify-around text-white font-bold text-2xl md:text-3xl mb-4">
-          <div>
-            <p>10+</p>
-            <span className="text-sm font-normal text-gray-400">Years Of Experience</span>
+        
+        {/* Stats */}
+        <div className="flex justify-around text-white font-bold text-2xl md:text-3xl mb-6">
+          <div className="flex flex-col items-center">
+            <p>{isInView && <Counter to={3} />}+</p>
+            <span className="text-sm font-normal text-gray-400 text-center">Years Of Experience</span>
           </div>
-          <div>
-            <p>150+</p>
-            <span className="text-sm font-normal text-gray-400">Completed Projects</span>
+          <div className="flex flex-col items-center">
+            <p>{isInView && <Counter to={20} />}+</p>
+            <span className="text-sm font-normal text-gray-400 text-center">Completed Projects</span>
           </div>
-          <div>
-            <p>2.5K</p>
-            <span className="text-sm font-normal text-gray-400">Satisfied Clients</span>
+          <div className="flex flex-col items-center">
+            <p>{isInView && <Counter to={10} />}+</p>
+            <span className="text-sm font-normal text-gray-400 text-center">Satisfied Clients</span>
           </div>
         </div>
 
         {/* Social Media Icons */}
-        <div className="flex justify-center lg:justify-start gap-6 mt-4 text-xl text-gray-400">
+        <div className="flex justify-center gap-6 mt-8 pt-2 text-xl text-gray-400">
           <motion.a
             href="https://github.com/HerlanAja"
             target="_blank"
@@ -80,7 +96,7 @@ const HeroStats: React.FC = () => {
             <FaLinkedin className="cursor-pointer" />
           </motion.a>
           <motion.a
-            href="https://www.tiktok.com/@ujangherlan_"
+            href="https://www.tiktok.com/@ujangherlan_?_t=ZS-90B2X3dz4Am&_r=1"
             target="_blank"
             rel="noopener noreferrer"
             whileTap={{ scale: 0.85 }}
