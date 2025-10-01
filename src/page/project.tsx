@@ -1,7 +1,7 @@
 "use client"
 
-import { useState, useRef, useEffect, type ReactNode, type MouseEvent } from "react"
-import { motion, AnimatePresence, useMotionValue, useTransform } from "framer-motion"
+import { useState, useEffect, type ReactNode } from "react"
+import { motion, AnimatePresence } from "framer-motion"
 import { FiExternalLink, FiGithub, FiCode, FiLayers, FiMonitor, FiSmartphone } from "react-icons/fi"
 import { projectsData, type Project } from "../constants/myproject" 
 
@@ -17,26 +17,6 @@ interface FilterButtonProps {
 }
 
 const ProjectCard = ({ project, index }: ProjectCardProps) => {
-  const cardRef = useRef<HTMLDivElement>(null)
-  const [isHovered, setIsHovered] = useState(false)
-  const x = useMotionValue(0)
-  const y = useMotionValue(0)
-  const rotateX = useTransform(y, [-150, 150], [5, -5])
-  const rotateY = useTransform(x, [-150, 150], [-5, 5])
-
-  const handleMouseMove = (event: MouseEvent<HTMLDivElement>) => {
-    if (!cardRef.current || !isHovered) return
-
-    const rect = cardRef.current.getBoundingClientRect()
-    const centerX = rect.left + rect.width / 2
-    const centerY = rect.top + rect.height / 2
-    const mouseX = event.clientX - centerX
-    const mouseY = event.clientY - centerY
-
-    x.set(mouseX)
-    y.set(mouseY)
-  }
-
   const getCategoryIcon = () => {
     switch (project.category) {
       case "web":
@@ -52,9 +32,7 @@ const ProjectCard = ({ project, index }: ProjectCardProps) => {
 
   return (
     <motion.div
-      ref={cardRef}
       className="h-full"
-      style={{ perspective: "1200px" }}
       initial={{ opacity: 0, y: 50 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{
@@ -63,27 +41,17 @@ const ProjectCard = ({ project, index }: ProjectCardProps) => {
         type: "spring",
         stiffness: 100,
       }}
-      onMouseMove={handleMouseMove}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => {
-        setIsHovered(false)
-        x.set(0)
-        y.set(0)
-      }}
     >
       <motion.div
         className="h-full overflow-hidden rounded-2xl bg-gradient-to-br from-gray-800/90 to-gray-900/90 border border-gray-700 hover:border-indigo-500/50 transition-colors duration-300"
-        style={{
-          rotateX: isHovered ? rotateX : 0,
-          rotateY: isHovered ? rotateY : 0,
-          transformStyle: "preserve-3d",
-        }}
         whileHover={{
           scale: 1.02,
-          boxShadow: "0 20px 40px -12px rgba(0,0,0,0.7), 0 0 20px 0px rgba(79, 70, 229, 0.2)",
+          boxShadow:
+            "0 20px 40px -12px rgba(0,0,0,0.7), 0 0 20px 0px rgba(79, 70, 229, 0.2)",
         }}
         transition={{ duration: 0.3 }}
       >
+        {/* Gambar */}
         <div className="relative h-48 overflow-hidden">
           <motion.div
             className="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent opacity-60 z-10"
@@ -110,6 +78,7 @@ const ProjectCard = ({ project, index }: ProjectCardProps) => {
           </div>
         </div>
 
+        {/* Konten */}
         <div className="p-5">
           <h3 className="text-xl font-bold text-white mb-2">{project.title}</h3>
           <p className="text-gray-300 text-sm mb-4">{project.description}</p>
@@ -174,29 +143,35 @@ const Projects = () => {
   const [filter, setFilter] = useState<"all" | "featured" | "web" | "mobile" | "ai">("all")
   const [displayedProjects, setDisplayedProjects] = useState<Project[]>([])
   const [showAll, setShowAll] = useState(false)
-  const [totalFilteredProjects, setTotalFilteredProjects] = useState<Project[]>([]);
+  const [totalFilteredProjects, setTotalFilteredProjects] = useState<Project[]>([])
 
-  // Konstanta untuk batas tampilan awal
-  const PROJECT_LIMIT = 3; 
+  const PROJECT_LIMIT = 3 
 
   useEffect(() => {
-    let currentProjects: Project[] = [];
-    if (filter === "all") {
-      currentProjects = projectsData;
-    } else if (filter === "featured") {
-      currentProjects = projectsData.filter((project) => project.featured);
-    } else {
-      currentProjects = projectsData.filter((project) => project.category === filter);
-    }
-    setTotalFilteredProjects(currentProjects); 
+    // 1. Sortir proyek berdasarkan tanggal upload terbaru (descending)
+    // Menggunakan const karena projectsData tidak berubah
+    const sortedProjects = [...projectsData].sort((a, b) => {
+      return new Date(b.uploadDate).getTime() - new Date(a.uploadDate).getTime();
+    });
 
+    // 2. Terapkan filter berdasarkan kategori
+    let filteredAndSortedProjects: Project[] = sortedProjects; // Menggunakan let karena akan di-reassign jika filter diterapkan
+
+    if (filter === "featured") {
+      filteredAndSortedProjects = sortedProjects.filter((project) => project.featured)
+    } else if (filter !== "all") {
+      filteredAndSortedProjects = sortedProjects.filter((project) => project.category === filter)
+    }
+
+    setTotalFilteredProjects(filteredAndSortedProjects)
+
+    // 3. Terapkan limit
     if (!showAll) {
-      setDisplayedProjects(currentProjects.slice(0, PROJECT_LIMIT)); 
+      setDisplayedProjects(filteredAndSortedProjects.slice(0, PROJECT_LIMIT))
     } else {
-      setDisplayedProjects(currentProjects);
+      setDisplayedProjects(filteredAndSortedProjects)
     }
-  }, [filter, showAll]);
-
+  }, [filter, showAll])
 
   return (
     <section id="projects" className="w-full py-8 px-10 from-black to-gray-900 relative overflow-hidden">
@@ -284,7 +259,6 @@ const Projects = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.4 }}
         >
-          {/* Tombol View All Projects hanya jika ada 4 atau lebih proyek dan belum dalam mode showAll */}
           {totalFilteredProjects.length >= 4 && !showAll && (
             <motion.button
               onClick={() => setShowAll(true)}
@@ -300,7 +274,6 @@ const Projects = () => {
             </motion.button>
           )}
 
-          {/* Tombol Show Less hanya jika semua proyek ditampilkan dan ada 4 atau lebih proyek total */}
           {totalFilteredProjects.length >= 4 && showAll && (
             <motion.button
               onClick={() => setShowAll(false)}
@@ -321,4 +294,4 @@ const Projects = () => {
   )
 }
 
-export default Projects;
+export default Projects
