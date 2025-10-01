@@ -1,6 +1,8 @@
-import silaharImage from '../assets/project/silahar.png';
-import Tabungan from '../assets/project/EventFundly.png';
-import SilaharWeb from '../assets/project/SilaharWeb.png';
+import silaharImage from '../assets/project/MobileSilahar.png';
+import Tabungan from '../assets/project/TugasMokup.png';
+import SilaharWeb from '../assets/project/SilaharMokup.png';
+import Conference from '../assets/project/ConfrenceMokup.png';
+import Portfolio from '../assets/project/WebPortofolio.png';
 
 export interface Project {
   id: number;
@@ -12,6 +14,7 @@ export interface Project {
   demoUrl: string;
   githubUrl: string;
   featured: boolean;
+  uploadDate: string; 
 }
 
 export const projectsData: Project[] = [
@@ -24,7 +27,8 @@ export const projectsData: Project[] = [
     technologies: ["Next.js", "Tailwind CSS", "Node.js", "MySQL"],
     demoUrl: "https://silahar.ftp.sh",
     githubUrl: "#",
-    featured: true
+    featured: true,
+    uploadDate: "2025-09-30" 
   },
   {
     id: 2,
@@ -35,7 +39,8 @@ export const projectsData: Project[] = [
     technologies: ["React", "Firebase", "Tailwind CSS", "Node.js"],
     demoUrl: "#",
     githubUrl: "#",
-    featured: true
+    featured: true,
+    uploadDate: "2025-09-25"
   },
   {
     id: 3,
@@ -46,17 +51,31 @@ export const projectsData: Project[] = [
     technologies: ["Flutter", "Express.js", "MySQL", "REST API"],
     demoUrl: "#",
     githubUrl: "#",
-    featured: true
+    featured: true,
+    uploadDate: "2025-09-28"
   },
   {
     id: 4,
-    title: "AI Chatbot - Customer Support",
-    description: "An AI-powered chatbot for customer support, capable of handling inquiries, providing information, and assisting with common issues.",
-    image: "#",
-    category: "ai",
-    technologies: ["Python", "TensorFlow", "Flask"],
-    demoUrl: "#",
+    title: "Conference Internasional - Event Management System",
+    description: "A web-based system for managing international conferences with participant registration, schedules, and agenda publication, built on WordPress for flexibility.",
+    image: Conference,
+    category: "web",
+    technologies: ["Wodpress"],
+    demoUrl: "https://icemac.nusaputra.ac.id/",
     githubUrl: "#",
-    featured: false
-  }
+    featured: false,
+    uploadDate: "2025-10-1"
+  },
+  {
+  "id": 5,
+  "title": "Personal Portfolio Website",
+  "description": "A personalized portfolio website created to highlight professional profiles, skills, and projects with a modern and responsive design.",
+  "image": Portfolio,
+  "category": "web",
+  "technologies": ["React", "Tailwind CSS"],
+  "demoUrl": "#",
+  "githubUrl": "#",
+  "featured": false,
+  "uploadDate": "2025-9-29"
+}
 ];
