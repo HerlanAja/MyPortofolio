@@ -107,16 +107,14 @@ Semoga pengalaman ini bisa jadi panduan untuk teman-teman yang sedang bingung me
     imageUrl: codingImage,
     readTime: 10,
 },
-  {
-    id: "4",
-    slug: "kapan-menggunakan-automatisasi",
-    title: "Kapan Sebaiknya Kita Menggunakan Automatisasi?",
-    excerpt: "Suatu hari saya diminta menggabungkan lebih dari 400 lembar PDF di kantor. Dari situ saya belajar, automatisasi bukan hanya soal efisiensi, tapi juga tentang bekerja lebih cerdas.",
-    content: `Pernah suatu hari di kantor, saya mendapat tugas sederhana tapi melelahkan: **menggabungkan lebih dari 400 lembar PDF** menjadi satu dokumen. Sekilas terlihat mudah — buka, seret, gabung, simpan. Tapi setelah menyadari jumlah filenya ratusan, saya mulai berpikir, *“Apa nggak ada cara yang lebih cepat dari ini?”*
+{
+  id: "4",
+  slug: "kapan-menggunakan-automatisasi",
+  title: "Kapan Sebaiknya Kita Menggunakan Automatisasi?",
+  excerpt: "Suatu hari saya diminta menggabungkan lebih dari 400 lembar PDF di kantor. Dari situ saya belajar, automatisasi bukan hanya soal efisiensi, tapi juga tentang bekerja lebih cerdas.",
+  content: `Pernah suatu hari di kantor, saya mendapat tugas sederhana tapi melelahkan: **menggabungkan lebih dari 400 lembar PDF** menjadi satu dokumen. Sekilas terlihat mudah — buka, seret, gabung, simpan. Tapi setelah menyadari jumlah filenya ratusan, saya mulai berpikir, *“Apa nggak ada cara yang lebih cepat dari ini?”*
 
 Di situlah saya menemukan kembali kekuatan **automatisasi**. Dengan beberapa baris kode Python, pekerjaan yang semula bisa memakan waktu berjam-jam selesai hanya dalam **hitungan detik**. Dari pengalaman itu, saya belajar satu hal penting: automatisasi bukan hanya soal efisiensi, tapi tentang bagaimana kita **memanfaatkan waktu dengan lebih cerdas**.
-
----
 
 ### Kapan Kita Sebaiknya Menggunakan Automatisasi?
 
@@ -126,25 +124,22 @@ Automatisasi sebaiknya digunakan ketika tugas yang kita hadapi:
 2. **Rawan kesalahan manusia.** Semakin banyak langkah manual, semakin besar risiko salah klik atau lupa satu file.  
 3. **Bisa dijelaskan dengan logika sederhana.** Jika langkah-langkahnya bisa dijabarkan dengan “jika A maka B”, automatisasi hampir selalu bisa diterapkan.
 
----
-
 ### Lebih dari Sekadar Hemat Waktu
 
 Dengan memahami kapan harus menggunakan automatisasi, kita tidak hanya bekerja lebih cepat, tapi juga membuka peluang untuk fokus pada hal yang lebih strategis — berpikir, mencipta, dan berinovasi.  
 Automatisasi bukan berarti menggantikan manusia, tapi **membantu manusia bekerja lebih cerdas**.
 
----
-
 ### Penutup
 
 > “Automatisasi bukan tentang menggantikan kerja keras, tapi tentang mengubah cara kita bekerja agar lebih bermakna.”
 
-Kalau kamu juga pernah menghadapi situasi serupa dan ingin tahu **kode Python yang saya gunakan untuk menggabungkan file PDF secara otomatis**, kamu bisa **hubungi saya melalui kontak di [ujangherlan.my.id](https://ujangherlan.my.id)**.  
+Kalau kamu juga pernah menghadapi situasi serupa dan ingin tahu **kode Python yang saya gunakan untuk menggabungkan file PDF secara otomatis**, kamu bisa **[hubungi saya di sini](#contact)**.  
 Siapa tahu, otomatisasi sederhana ini juga bisa menghemat waktumu berjam-jam.`,
-    date: "29 Oktober 2025",
-    author: "Ujang Herlan",
-    category: "Sharing Experience",
-    imageUrl: automationImage,
-    readTime: 8,
+  date: "29 Oktober 2025",
+  author: "Ujang Herlan",
+  category: "Sharing Experience",
+  imageUrl: automationImage,
+  readTime: 8,
 }
+
 ];
