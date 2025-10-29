@@ -1,7 +1,7 @@
 import portfolioImage from "/src/assets/project/WebPortofolio.png";
 import mangcodingImage from "/src/assets/project/MangcodingPKL.png"; 
 import codingImage from "/src/assets/project/codingvsnocoding.jpg";
-import automationImage from "/src/assets/project/otomatisasi.png";
+import automationImage from "/src/assets/project/otomatisasi.jpg";
 
 export interface BlogPost {
   id: string;
