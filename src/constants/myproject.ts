@@ -82,7 +82,7 @@ export const projectsData: Project[] = [
 {
   "id": 6,
   "title": "SENTIMETER - Website Seminar Nasional Teknik Informatika",
-  "description": "Pengembangan website resmi untuk SENTIMETER (Seminar Nasional Teknik Informatika). Website ini berfungsi sebagai hub informasi utama bagi peserta, mencakup detail acara, pendaftaran, dan pengiriman paper.",
+  "description": "Development of the official website for SENTIMETER (National Seminar on Informatics Engineering). This website will serve as the primary information hub for participants, including event details, registration, and paper submission.",
   "image": Sentimeter,
   "category": "web",
   "technologies": ["WordPress", "Elementor"],
