@@ -53,10 +53,12 @@ const Navbar: React.FC = () => {
     },
   };
 
+/*************  ✨ Windsurf Command ⭐  *************/
+/*******  f293eda0-4053-45c9-bdd6-7c726cb9fe15  *******/
   const handleHireMeClick = () => {
     const link = document.createElement('a');
-    link.href = '/CV-Ujang-Herlan-Update.pdf'; // updated path to public root
-    link.download = 'CV-Ujang-Herlan-Update.pdf';
+    link.href = '/CV-UjangHerlan-Update.pdf'; // updated path to public root
+    link.download = 'CV-UjangHerlan-Update.pdf';
     link.click();
   };
 

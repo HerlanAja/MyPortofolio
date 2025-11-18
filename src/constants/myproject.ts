@@ -3,6 +3,7 @@ import Tabungan from '../assets/project/TugasMokup.png';
 import SilaharWeb from '../assets/project/SilaharMokup.png';
 import Conference from '../assets/project/ConfrenceMokup.png';
 import Portfolio from '../assets/project/WebPortofolio.png';
+import Sentimeter from '../assets/project/sentimeter.png';
 
 export interface Project {
   id: number;
@@ -77,5 +78,17 @@ export const projectsData: Project[] = [
   "githubUrl": "#",
   "featured": false,
   "uploadDate": "2025-9-29"
+},
+{
+  "id": 6,
+  "title": "SENTIMETER - Website Seminar Nasional Teknik Informatika",
+  "description": "Pengembangan website resmi untuk SENTIMETER (Seminar Nasional Teknik Informatika). Website ini berfungsi sebagai hub informasi utama bagi peserta, mencakup detail acara, pendaftaran, dan pengiriman paper.",
+  "image": Sentimeter,
+  "category": "web",
+  "technologies": ["WordPress", "Elementor"],
+  "demoUrl": "sentimeter.nusaputra.id",
+  "githubUrl": "#",
+  "featured": false,
+  "uploadDate": "2025-11-18"
 }
 ];
