@@ -86,7 +86,7 @@ export const projectsData: Project[] = [
   "image": Sentimeter,
   "category": "web",
   "technologies": ["WordPress", "Elementor"],
-  "demoUrl": "sentimeter.nusaputra.id",
+  "demoUrl": "https://sentimeter.nusaputra.id",
   "githubUrl": "#",
   "featured": false,
   "uploadDate": "2025-11-18"
