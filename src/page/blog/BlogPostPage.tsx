@@ -1,7 +1,7 @@
 import { useParams, Link, Navigate } from "react-router-dom";
 import { blogPosts } from "../../constants/blog-post";
 import ShareButtons from "../../components/ShareButtons";
-import { ArrowLeft, Clock, User, ArrowRight } from "lucide-react"; 
+import { ArrowLeft, Clock, User } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { useMemo } from "react"; 
