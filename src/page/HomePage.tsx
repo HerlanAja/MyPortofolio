@@ -2,10 +2,10 @@ import React, { useEffect, useRef } from 'react';
 import { motion, useInView, animate } from 'framer-motion';
 import profileImage from '../assets/uhe.png';
 
-// Komponen Counter tetap sama
+// Komponen Counter
 const Counter = ({ from, to }: { from: number; to: number }) => {
   const nodeRef = useRef<HTMLSpanElement>(null);
-  const isInView = useInView(nodeRef, { once: false }); // Ubah ke false agar terulang saat scroll
+  const isInView = useInView(nodeRef, { once: false });
 
   useEffect(() => {
     if (isInView) {
@@ -26,7 +26,7 @@ const Counter = ({ from, to }: { from: number; to: number }) => {
   return <span ref={nodeRef}>{from}</span>;
 };
 
-// Komponen Label Melayang dengan efek Fade Out saat scroll
+// Komponen Label Melayang
 const FloatingLabel = ({ text, num, className, delay }: { text: string; num: string; className: string; delay: number }) => (
   <motion.div
     initial={{ opacity: 0, y: 20 }}
@@ -56,11 +56,9 @@ const HomePage: React.FC = () => {
   return (
     <div className="relative min-h-screen w-full flex flex-col overflow-visible">
       
-      {/* Background grid sudah di App.tsx, jadi di sini dihapus agar tidak double */}
-
       <main id="home" className="relative z-10 w-full flex-grow flex px-4 sm:px-6 md:px-10 lg:px-16 xl:px-20 max-w-7xl mx-auto flex-col lg:flex-row lg:items-end justify-between pt-24 lg:pt-0">
         
-        {/* Text Content Section dengan whileInView */}
+        {/* Text Content Section */}
         <motion.section
           className="text-left text-white w-full lg:w-1/2 z-10 pt-10 lg:pt-48 lg:pb-24 order-1"
           initial={{ opacity: 0, x: -50 }}
@@ -102,9 +100,19 @@ const HomePage: React.FC = () => {
           </div>
         </motion.section>
 
-        {/* Image Section dengan whileInView */}
+        {/* Image Section dengan Efek Cahaya */}
         <div className="w-full lg:w-1/2 relative flex justify-center lg:justify-end items-end order-2 mt-auto lg:mt-0">
           
+          {/* EFEK CAHAYA BELAKANG IMAGE (Glow) */}
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.8 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.8 }}
+            viewport={{ once: false, amount: 0.3 }}
+            transition={{ duration: 1.5, ease: "easeOut" }}
+            className="absolute bottom-[10%] right-1/2 translate-x-1/2 lg:translate-x-0 lg:right-[5%] w-[300px] h-[300px] lg:w-[550px] lg:h-[550px] bg-blue-600/20 blur-[80px] lg:blur-[130px] rounded-full z-0 pointer-events-none"
+          />
+
           <motion.div
             className="relative w-full max-w-[280px] sm:max-w-[350px] md:max-w-[420px] lg:max-w-[500px] aspect-[4/5] z-10 flex items-end"
             initial={{ opacity: 0, y: 50 }}
@@ -116,7 +124,7 @@ const HomePage: React.FC = () => {
             <img
               src={profileImage}
               alt="Uhe Profile"
-              className="w-full h-auto object-contain block" 
+              className="w-full h-auto object-contain block relative z-20" 
               style={{ marginBottom: '-1px' }}
             />
 
