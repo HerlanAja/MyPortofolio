@@ -2,8 +2,8 @@
 
 import { useState, useEffect, type ReactNode } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { FiExternalLink, FiGithub, FiCode, FiLayers, FiMonitor, FiSmartphone } from "react-icons/fi"
-import { projectsData, type Project } from "../constants/myproject" 
+import { FiExternalLink, FiGithub, FiCode, FiLayers, FiMonitor, FiSmartphone, FiChevronDown, FiChevronUp } from "react-icons/fi"
+import { projectsData, type Project } from "../constants/myproject"
 
 interface ProjectCardProps {
   project: Project
@@ -19,279 +19,196 @@ interface FilterButtonProps {
 const ProjectCard = ({ project, index }: ProjectCardProps) => {
   const getCategoryIcon = () => {
     switch (project.category) {
-      case "web":
-        return <FiMonitor className="w-5 h-5" />
-      case "mobile":
-        return <FiSmartphone className="w-5 h-5" />
-      case "ai":
-        return <FiLayers className="w-5 h-5" />
-      default:
-        return <FiCode className="w-5 h-5" />
+      case "web": return <FiMonitor className="w-4 h-4" />
+      case "mobile": return <FiSmartphone className="w-4 h-4" />
+      case "ai": return <FiLayers className="w-4 h-4" />
+      default: return <FiCode className="w-4 h-4" />
     }
   }
 
   return (
     <motion.div
-      className="h-full"
-      initial={{ opacity: 0, y: 50 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{
-        duration: 0.8,
-        delay: index * 0.1,
-        type: "spring",
-        stiffness: 100,
-      }}
+      className="w-full mb-8"
+      // Efek Fade In & Out saat scroll
+      initial={{ opacity: 0, x: -30 }}
+      whileInView={{ opacity: 1, x: 0 }}
+      exit={{ opacity: 0, x: 30 }}
+      viewport={{ once: false, amount: 0.2 }}
+      transition={{ duration: 0.6, delay: 0.1 }}
     >
-      <motion.div
-        className="h-full overflow-hidden rounded-2xl bg-gradient-to-br from-gray-800/90 to-gray-900/90 border border-gray-700 hover:border-indigo-500/50 transition-colors duration-300"
-        whileHover={{
-          scale: 1.02,
-          boxShadow:
-            "0 20px 40px -12px rgba(0,0,0,0.7), 0 0 20px 0px rgba(79, 70, 229, 0.2)",
-        }}
-        transition={{ duration: 0.3 }}
-      >
-        {/* Gambar */}
-        <div className="relative h-48 overflow-hidden">
-          <motion.div
-            className="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent opacity-60 z-10"
-            whileHover={{ opacity: 0.4 }}
-          />
+      <div className="relative group flex flex-col md:flex-row bg-slate-900/40 backdrop-blur-sm border border-white/5 rounded-3xl overflow-hidden hover:border-blue-500/30 transition-all duration-500 min-h-fit">
+        
+        {/* Project Image */}
+        <div className="w-full md:w-2/5 h-64 md:h-80 lg:h-[400px] overflow-hidden bg-slate-800 shrink-0">
           <motion.img
             src={project.image}
             alt={project.title}
-            className="w-full h-full object-cover"
-            whileHover={{ scale: 1.05 }}
-            transition={{ duration: 0.5 }}
+            className="w-full h-full object-cover grayscale-[50%] group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700"
           />
-
-          {project.featured && (
-            <div className="absolute top-3 right-3 bg-indigo-600 text-white text-xs font-bold px-2 py-1 rounded-full z-20 flex items-center gap-1">
-              <span className="w-2 h-2 rounded-full bg-white animate-pulse"></span>
-              Featured
-            </div>
-          )}
-
-          <div className="absolute top-3 left-3 bg-gray-800/80 backdrop-blur-sm text-white text-xs px-2 py-1 rounded-full z-20 flex items-center gap-1 border border-gray-700">
-            {getCategoryIcon()}
-            <span className="capitalize">{project.category}</span>
-          </div>
+          <div className="absolute inset-0 bg-gradient-to-r from-slate-950/20 to-transparent pointer-events-none" />
         </div>
 
-        {/* Konten */}
-        <div className="p-5">
-          <h3 className="text-xl font-bold text-white mb-2">{project.title}</h3>
-          <p className="text-gray-300 text-sm mb-4">{project.description}</p>
+        {/* Project Details */}
+        <div className="w-full md:w-3/5 p-6 md:p-10 lg:p-12 flex flex-col justify-start">
+          <div className="flex items-center gap-3 mb-4">
+            <span className="flex items-center gap-1.5 px-3 py-1 bg-blue-500/10 border border-blue-500/20 text-blue-400 text-[10px] font-bold uppercase tracking-wider rounded-full">
+              {getCategoryIcon()}
+              {project.category}
+            </span>
+            {project.featured && (
+              <span className="px-3 py-1 bg-amber-500/10 border border-amber-500/20 text-amber-500 text-[10px] font-bold uppercase tracking-wider rounded-full animate-pulse">
+                Featured
+              </span>
+            )}
+          </div>
 
-          <div className="flex flex-wrap gap-2 mb-5">
+          <h3 className="text-xl md:text-2xl lg:text-3xl font-bold text-white mb-3 group-hover:text-blue-400 transition-colors">
+            {project.title}
+          </h3>
+          
+          <p className="text-gray-400 text-sm md:text-base leading-relaxed mb-6 max-w-2xl line-clamp-3 md:line-clamp-4">
+            {project.description}
+          </p>
+
+          {/* Tech Stack */}
+          <div className="flex flex-wrap gap-2 mb-6 md:mb-8">
             {project.technologies.map((tech: string, i: number) => (
-              <motion.span
-                key={i}
-                className="px-2 py-1 bg-gray-800 text-xs text-gray-300 rounded-md border border-gray-700"
-                whileHover={{
-                  y: -2,
-                  backgroundColor: "rgba(79, 70, 229, 0.2)",
-                  borderColor: "rgba(79, 70, 229, 0.5)",
-                }}
-                transition={{ type: "spring", stiffness: 300, damping: 10 }}
-              >
+              <span key={i} className="text-[11px] text-gray-500 font-medium border-b border-white/10 pb-0.5">
                 {tech}
-              </motion.span>
+              </span>
             ))}
           </div>
 
-          <div className="flex gap-3">
+          {/* Action Buttons */}
+          <div className="flex items-center gap-6 mt-4 md:mt-auto">
             <motion.a
               href={project.demoUrl}
-              className="flex items-center gap-1 px-3 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white text-sm rounded-lg transition-colors"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
+              target="_blank"
+              className="flex items-center gap-2 text-white font-bold text-xs uppercase tracking-[0.2em] group/btn"
+              whileHover={{ x: 5 }}
             >
-              <FiExternalLink className="w-4 h-4" />
-              Live Demo
+              Live Demo <FiExternalLink className="group-hover/btn:text-blue-500" />
             </motion.a>
             <motion.a
               href={project.githubUrl}
-              className="flex items-center gap-1 px-3 py-1.5 bg-gray-700 hover:bg-gray-600 text-white text-sm rounded-lg transition-colors"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
+              target="_blank"
+              className="flex items-center gap-2 text-gray-500 hover:text-white font-bold text-xs uppercase tracking-[0.2em] transition-colors"
+              whileHover={{ x: 5 }}
             >
-              <FiGithub className="w-4 h-4" />
-              Code
+              Source Code <FiGithub />
             </motion.a>
           </div>
         </div>
-      </motion.div>
+
+        {/* Number Badge */}
+        <span className="absolute top-4 right-8 text-6xl md:text-7xl font-bold text-white/[0.03] pointer-events-none select-none">
+          0{index + 1}
+        </span>
+      </div>
     </motion.div>
   )
 }
 
 const FilterButton = ({ active, onClick, children }: FilterButtonProps) => (
-  <motion.button
-    className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
-      active ? "bg-indigo-600 text-white" : "bg-gray-800 text-gray-300 hover:bg-gray-700"
+  <button
+    className={`px-6 py-2 rounded-full text-[11px] font-bold uppercase tracking-widest transition-all duration-300 border ${
+      active ? "bg-blue-500 border-blue-500 text-white shadow-[0_0_20px_rgba(59,130,246,0.3)]" : "bg-transparent border-white/10 text-gray-500 hover:border-white/30"
     }`}
     onClick={onClick}
-    whileHover={{ scale: 1.05 }}
-    whileTap={{ scale: 0.95 }}
   >
     {children}
-  </motion.button>
+  </button>
 )
 
 const Projects = () => {
   const [filter, setFilter] = useState<"all" | "featured" | "web" | "mobile" | "ai">("all")
-  const [displayedProjects, setDisplayedProjects] = useState<Project[]>([])
   const [showAll, setShowAll] = useState(false)
-  const [totalFilteredProjects, setTotalFilteredProjects] = useState<Project[]>([])
+  const [filteredProjects, setFilteredProjects] = useState<Project[]>([])
 
-  const PROJECT_LIMIT = 3 
+  const PROJECT_LIMIT = 3
 
   useEffect(() => {
-    // 1. Sortir proyek berdasarkan tanggal upload terbaru (descending)
-    // Menggunakan const karena projectsData tidak berubah
-    const sortedProjects = [...projectsData].sort((a, b) => {
-      return new Date(b.uploadDate).getTime() - new Date(a.uploadDate).getTime();
-    });
-
-    // 2. Terapkan filter berdasarkan kategori
-    let filteredAndSortedProjects: Project[] = sortedProjects; // Menggunakan let karena akan di-reassign jika filter diterapkan
+    let result = [...projectsData].sort((a, b) => 
+      new Date(b.uploadDate).getTime() - new Date(a.uploadDate).getTime()
+    );
 
     if (filter === "featured") {
-      filteredAndSortedProjects = sortedProjects.filter((project) => project.featured)
+      result = result.filter(p => p.featured)
     } else if (filter !== "all") {
-      filteredAndSortedProjects = sortedProjects.filter((project) => project.category === filter)
+      result = result.filter(p => p.category === filter)
     }
 
-    setTotalFilteredProjects(filteredAndSortedProjects)
+    setFilteredProjects(result)
+  }, [filter])
 
-    // 3. Terapkan limit
-    if (!showAll) {
-      setDisplayedProjects(filteredAndSortedProjects.slice(0, PROJECT_LIMIT))
-    } else {
-      setDisplayedProjects(filteredAndSortedProjects)
-    }
-  }, [filter, showAll])
+  const displayed = showAll ? filteredProjects : filteredProjects.slice(0, PROJECT_LIMIT)
 
   return (
-    <section id="projects" className="w-full py-8 px-10 from-black to-gray-900 relative overflow-hidden">
-      <div className="absolute top-0 left-0 w-full h-full overflow-hidden -z-10">
-        <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-indigo-600/10 rounded-full blur-[100px]" />
-        <div className="absolute bottom-1/4 right-1/4 w-64 h-64 bg-purple-600/10 rounded-full blur-[100px]" />
-        <div className="absolute top-3/4 left-3/4 w-64 h-64 bg-blue-600/10 rounded-full blur-[100px]" />
-      </div>
+    <section id="projects" className="relative w-full py-24 px-4 sm:px-6 md:px-10 lg:px-20 max-w-7xl mx-auto overflow-hidden">
+      
+      {/* Background Glows */}
+      <div className="absolute top-1/4 -right-20 w-80 h-80 bg-blue-600/5 blur-[120px] pointer-events-none" />
+      <div className="absolute bottom-1/4 -left-20 w-80 h-80 bg-indigo-600/5 blur-[120px] pointer-events-none" />
 
-      <div className="max-w-7xl mx-auto">
-        <motion.div
-          className="text-center mb-8"
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-        >
-          <motion.h2
-            className="text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 inline-block mb-2"
-            initial={{ y: -50, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.7, type: "spring", stiffness: 100 }}
+      <div className="relative z-10">
+        <div className="mb-16">
+          <motion.span 
+            className="text-blue-500 text-xs tracking-[0.3em] uppercase font-bold mb-4 block"
+            initial={{ opacity: 0, y: -10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            viewport={{ once: false }}
+            transition={{ duration: 0.5 }}
           >
-            My Projects
+            Portfolio
+          </motion.span>
+          <motion.h2 
+            className="text-3xl md:text-5xl font-bold text-white mb-8"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 20 }}
+            viewport={{ once: false }}
+            transition={{ duration: 0.7, delay: 0.1 }}
+          >
+            Selected <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-500">Projects.</span>
           </motion.h2>
 
-          <motion.div
-            className="h-px bg-gradient-to-r from-transparent via-indigo-500/50 to-transparent mb-4 mx-auto w-3/4"
-            initial={{ scaleX: 0 }}
-            animate={{ scaleX: 1 }}
-            transition={{ duration: 0.8, delay: 0.3 }}
-          />
+          <div className="flex flex-wrap gap-3 mt-10">
+            <FilterButton active={filter === "all"} onClick={() => setFilter("all")}>All</FilterButton>
+            <FilterButton active={filter === "featured"} onClick={() => setFilter("featured")}>Featured</FilterButton>
+            <FilterButton active={filter === "web"} onClick={() => setFilter("web")}>Web</FilterButton>
+            <FilterButton active={filter === "mobile"} onClick={() => setFilter("mobile")}>Apps</FilterButton>
+          </div>
+        </div>
 
-          <motion.p
-            className="text-gray-400 max-w-2xl mx-auto"
-            initial={{ y: 20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.7, delay: 0.4 }}
-          >
-            Explore my latest work and personal projects. Each project represents my passion for creating innovative and user-friendly digital experiences.
-          </motion.p>
-        </motion.div>
-
-        <motion.div
-          className="flex flex-wrap justify-center gap-3 mb-8"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-        >
-          <FilterButton active={filter === "all"} onClick={() => {setFilter("all"); setShowAll(false);}}>All Projects</FilterButton>
-          <FilterButton active={filter === "featured"} onClick={() => {setFilter("featured"); setShowAll(false);}}>Featured</FilterButton>
-          <FilterButton active={filter === "web"} onClick={() => {setFilter("web"); setShowAll(false);}}>Web Development</FilterButton>
-          <FilterButton active={filter === "mobile"} onClick={() => {setFilter("mobile"); setShowAll(false);}}>Mobile Apps</FilterButton>
-          <FilterButton active={filter === "ai"} onClick={() => {setFilter("ai"); setShowAll(false);}}>AI & ML</FilterButton>
-        </motion.div>
-
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={filter + (showAll ? "all" : "limited")} 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.5 }}
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-          >
-            {displayedProjects.map((project, index) => (
+        <div className="flex flex-col">
+          <AnimatePresence mode="popLayout">
+            {displayed.map((project, index) => (
               <ProjectCard key={project.id} project={project} index={index} />
             ))}
-          </motion.div>
-        </AnimatePresence>
+          </AnimatePresence>
+        </div>
 
-        {displayedProjects.length === 0 && (
-          <motion.div
-            className="text-center py-20"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5 }}
-          >
-            <p className="text-gray-400 text-lg">No projects found in this category.</p>
-          </motion.div>
+        {filteredProjects.length > PROJECT_LIMIT && (
+          <div className="flex justify-center mt-12">
+            <motion.button
+              onClick={() => setShowAll(!showAll)}
+              className="group flex flex-col items-center gap-2 text-gray-500 hover:text-blue-400 transition-colors"
+              whileHover={{ y: 5 }}
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: false }}
+            >
+              <span className="text-[10px] font-bold uppercase tracking-[0.3em]">
+                {showAll ? "Show Less" : "Show More Projects"}
+              </span>
+              {showAll ? <FiChevronUp className="text-xl" /> : <FiChevronDown className="text-xl animate-bounce" />}
+            </motion.button>
+          </div>
         )}
-
-        <motion.div
-          className="flex justify-center mt-12"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-        >
-          {totalFilteredProjects.length >= 4 && !showAll && (
-            <motion.button
-              onClick={() => setShowAll(true)}
-              className="px-6 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-lg font-medium flex items-center gap-2"
-              whileHover={{
-                scale: 1.05,
-                boxShadow: "0 10px 25px -5px rgba(79, 70, 229, 0.4)",
-              }}
-              whileTap={{ scale: 0.95 }}
-            >
-              View All Projects
-              <FiExternalLink className="w-4 h-4" />
-            </motion.button>
-          )}
-
-          {totalFilteredProjects.length >= 4 && showAll && (
-            <motion.button
-              onClick={() => setShowAll(false)}
-              className="px-6 py-3 bg-gradient-to-r from-gray-700 to-gray-800 text-white rounded-lg font-medium flex items-center gap-2"
-              whileHover={{
-                scale: 1.05,
-                boxShadow: "0 10px 25px -5px rgba(0,0,0,0.4)",
-              }}
-              whileTap={{ scale: 0.95 }}
-            >
-              Show Less
-              <FiCode className="w-4 h-4" /> 
-            </motion.button>
-          )}
-        </motion.div>
       </div>
     </section>
   )
 }
 
-export default Projects
+export default Projects;

@@ -1,10 +1,9 @@
 "use client"
 
 import { useState, useRef, type FormEvent } from "react"
-import { motion } from "framer-motion"
+import { motion, AnimatePresence } from "framer-motion"
 import emailjs from '@emailjs/browser'
-import { FiSend, FiMail, FiMessageSquare, FiMessageCircle } from "react-icons/fi"
-import { FaWhatsapp, FaLinkedin } from "react-icons/fa"
+import { FiSend, FiArrowUpRight } from "react-icons/fi"
 
 const Contact = () => {
   const formRef = useRef<HTMLFormElement>(null)
@@ -27,12 +26,6 @@ const Contact = () => {
       return
     }
 
-    if (!/^\S+@\S+\.\S+$/.test(email)) {
-      setError('Please enter a valid email address')
-      setIsSending(false)
-      return
-    }
-
     try {
       if (!formRef.current) return
 
@@ -47,214 +40,157 @@ const Contact = () => {
       setName('')
       setEmail('')
       setMessage('')
-    } catch (error) {
-      console.error(error)
-      setError('An error occurred while sending the email. Please try again later.')
+      setTimeout(() => setIsSuccess(false), 5000)
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (err) {
+      setError('Something went wrong. Please try again.')
     } finally {
       setIsSending(false)
     }
   }
 
   return (
-    <section id="contact" className="w-full py-16 px-4">
-      <div className="max-w-7xl mx-auto">
-        <div className="flex justify-center w-full">
-          <motion.h1
-            className="text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-purple-400 to-green-400 mb-4"
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-          >
-            Let's Talk About Your Great Project
-          </motion.h1>
-        </div>
-
-        <motion.div
-          className="h-px bg-gradient-to-r from-transparent via-white/50 to-transparent mb-12 mx-auto w-3/4"
-          initial={{ scaleX: 0 }}
-          animate={{ scaleX: 1 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-        />
-
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Contact Methods */}
-          <motion.div
-            className="space-y-6"
-            initial={{ opacity: 0, x: -50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5 }}
-          >
-            <motion.div 
-              className="p-6 rounded-2xl backdrop-blur-lg bg-white/5 border border-white/10 hover:bg-blue-900/10 transition-colors"
-              whileHover={{ y: -5 }}
+    <motion.section 
+      id="contact" 
+      // Efek Fade In & Out saat masuk/keluar viewport
+      initial={{ opacity: 0 }}
+      whileInView={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      viewport={{ once: false, amount: 0.2 }}
+      transition={{ duration: 0.8 }}
+      className="relative w-full py-20 px-4 sm:px-6 md:px-10 lg:px-20 max-w-7xl mx-auto overflow-hidden"
+    >
+      <div className="flex flex-col lg:flex-row items-start justify-between gap-12 lg:gap-24">
+        
+        {/* Sisi Kiri: Header & Info */}
+        <motion.div 
+          className="w-full lg:w-1/2 lg:sticky lg:top-10"
+          initial={{ opacity: 0, x: -30 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: -30 }}
+          viewport={{ once: false }}
+          transition={{ duration: 0.8, delay: 0.1 }}
+        >
+          <span className="text-blue-500 text-xs tracking-[0.3em] uppercase font-bold mb-4 block">
+            Contact
+          </span>
+          <h2 className="text-3xl md:text-5xl font-bold text-white leading-tight mb-8">
+            Let's talk about your <span className="text-blue-500">great project.</span>
+          </h2>
+          
+          <div className="space-y-6 mt-10">
+            <motion.div
+               initial={{ opacity: 0, y: 10 }}
+               whileInView={{ opacity: 1, y: 0 }}
+               viewport={{ once: false }}
+               transition={{ delay: 0.2 }}
             >
-              <div className="flex items-center gap-4 mb-3">
-                <div className="p-3 rounded-full bg-blue-900/20 border border-blue-400/30">
-                  <FiMail className="text-blue-400 text-xl" />
-                </div>
-                <h3 className="text-xl font-semibold text-blue-400">Email</h3>
-              </div>
-              <p className="text-gray-300 mb-2">ujangherlaan@gmail.com</p>
-              <a 
-                href="mailto:ujangherlaan@gmail.com" 
-                className="text-blue-400 hover:underline flex items-center gap-1"
-              >
-                <FiMessageSquare /> Message
+              <p className="text-gray-500 text-[10px] uppercase tracking-widest mb-1">Email Me</p>
+              <a href="mailto:ujangherlaan@gmail.com" className="text-lg text-white hover:text-blue-400 transition-colors flex items-center gap-2 group">
+                ujangherlaan@gmail.com 
+                <FiArrowUpRight className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
               </a>
             </motion.div>
-
-            <motion.div 
-              className="p-6 rounded-2xl backdrop-blur-lg bg-white/5 border border-white/10 hover:bg-purple-900/10 transition-colors"
-              whileHover={{ y: -5 }}
+            
+            <motion.div
+               initial={{ opacity: 0, y: 10 }}
+               whileInView={{ opacity: 1, y: 0 }}
+               viewport={{ once: false }}
+               transition={{ delay: 0.3 }}
             >
-              <div className="flex items-center gap-4 mb-3">
-                <div className="p-3 rounded-full bg-purple-900/20 border border-purple-400/30">
-                  <FaLinkedin className="text-purple-400 text-xl" />
-                </div>
-                <h3 className="text-xl font-semibold text-purple-400">LinkedIn</h3>
-              </div>
-              <p className="text-gray-300 mb-2">Ujang Herlan</p>
-              <a 
-                href="https://www.linkedin.com/in/ujangherlan" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="text-purple-400 hover:underline flex items-center gap-1"
-              >
-                <FiMessageCircle /> Message
+              <p className="text-gray-500 text-[10px] uppercase tracking-widest mb-1">WhatsApp</p>
+              <a href="https://wa.me/6285846537024" target="_blank" rel="noopener noreferrer" className="text-lg text-white hover:text-green-400 transition-colors flex items-center gap-2 group">
+                +62 858 4653 7024
+                <FiArrowUpRight className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
               </a>
             </motion.div>
+          </div>
+        </motion.div>
 
-            <motion.div 
-              className="p-6 rounded-2xl backdrop-blur-lg bg-white/5 border border-white/10 hover:bg-green-900/10 transition-colors"
-              whileHover={{ y: -5 }}
-            >
-              <div className="flex items-center gap-4 mb-3">
-                <div className="p-3 rounded-full bg-green-900/20 border border-green-400/30">
-                  <FaWhatsapp className="text-green-400 text-xl" />
-                </div>
-                <h3 className="text-xl font-semibold text-green-400">WhatsApp</h3>
-              </div>
-              <p className="text-gray-300 mb-2">+6285846537024</p>
-              <a 
-                href="https://wa.me/6285846537024" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="text-green-400 hover:underline flex items-center gap-1"
-              >
-                <FiMessageSquare /> Message
-              </a>
-            </motion.div>
-          </motion.div>
-
-          {/* Contact Form */}
-          <motion.div 
-            className="relative rounded-3xl p-8 overflow-hidden backdrop-blur-lg bg-white/5 border border-white/10"
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            style={{
-              perspective: 1000,
-              transformStyle: "preserve-3d",
-              boxShadow: "0 8px 32px rgba(0, 0, 0, 0.1)"
-            }}
-          >
-            {/* Glowing background circles */}
-            <div className="absolute top-4 right-4 w-32 h-32 rounded-full bg-blue-600/20 blur-xl"></div>
-            <div className="absolute top-8 right-8 w-24 h-24 rounded-full bg-purple-500/30 blur-lg"></div>
-            <div className="absolute top-12 right-12 w-16 h-16 rounded-full bg-green-400/40 blur-md"></div>
-
-            <div className="relative z-10">
+        {/* Sisi Kanan: Form */}
+        <motion.div 
+          className="w-full lg:w-1/2 pt-10 lg:pt-0"
+          initial={{ opacity: 0, x: 30 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: 30 }}
+          viewport={{ once: false }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+        >
+          <form ref={formRef} onSubmit={handleSubmit} className="space-y-8">
+            <AnimatePresence mode="wait">
               {isSuccess && (
-                <motion.div
-                  className="mb-6 p-4 bg-green-900/20 rounded-lg border border-green-400/30 backdrop-blur-sm"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
+                <motion.div 
+                  initial={{ opacity: 0, height: 0 }} 
+                  animate={{ opacity: 1, height: "auto" }} 
+                  exit={{ opacity: 0, height: 0 }} 
+                  className="p-4 bg-blue-500/10 border border-blue-500/50 rounded-lg text-blue-400 text-xs"
                 >
-                  <p className="text-green-400">Message sent successfully! We'll get back to you soon.</p>
+                  Message sent successfully! I'll get back to you soon.
                 </motion.div>
               )}
-              
               {error && (
-                <motion.div
-                  className="mb-6 p-4 bg-red-900/20 rounded-lg border border-red-400/30 backdrop-blur-sm"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
+                <motion.div 
+                  initial={{ opacity: 0, height: 0 }} 
+                  animate={{ opacity: 1, height: "auto" }} 
+                  exit={{ opacity: 0, height: 0 }} 
+                  className="p-4 bg-red-500/10 border border-red-500/50 rounded-lg text-red-400 text-xs"
                 >
-                  <p className="text-red-400">{error}</p>
+                  {error}
                 </motion.div>
               )}
+            </AnimatePresence>
 
-              <form 
-                ref={formRef}
-                onSubmit={handleSubmit}
-                className="space-y-6"
-              >
-                <div>
-                  <label className="block text-gray-300 mb-2">Your full name</label>
-                  <input
-                    type="text"
-                    name="from_name"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    className="w-full px-5 py-3 bg-white/5 rounded-xl border border-white/10 focus:outline-none focus:ring-2 focus:ring-blue-500/50 text-white placeholder-white/50"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-gray-300 mb-2">Your Email</label>
-                  <input
-                    type="email"
-                    name="from_email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    className="w-full px-5 py-3 bg-white/5 rounded-xl border border-white/10 focus:outline-none focus:ring-2 focus:ring-purple-500/50 text-white placeholder-white/50"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-gray-300 mb-2">Your Message</label>
-                  <textarea
-                    name="message"
-                    cols={30}
-                    rows={5}
-                    value={message}
-                    onChange={(e) => setMessage(e.target.value)}
-                    className="w-full px-5 py-3 bg-white/5 rounded-xl border border-white/10 focus:outline-none focus:ring-2 focus:ring-green-500/50 text-white placeholder-white/50"
-                  />
-                </div>
-
-                <motion.button
-                  type="submit"
-                  disabled={isSending}
-                  className={`w-full py-3 px-6 rounded-xl font-medium flex items-center justify-center gap-2 ${
-                    isSending 
-                      ? 'bg-blue-900/50' 
-                      : 'bg-gradient-to-r from-blue-600 via-purple-600 to-green-600 hover:opacity-90'
-                  }`}
-                  whileHover={!isSending ? { scale: 1.02 } : {}}
-                  whileTap={!isSending ? { scale: 0.98 } : {}}
-                >
-                  {isSending ? (
-                    <>
-                      <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                      </svg>
-                      Sending...
-                    </>
-                  ) : (
-                    <>
-                      <FiSend className="w-5 h-5" />
-                      Send Now
-                    </>
-                  )}
-                </motion.button>
-              </form>
+            <div className="relative group">
+              <input
+                type="text"
+                name="from_name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder="Full Name"
+                className="w-full py-3 bg-transparent border-b border-white/20 focus:border-blue-500 outline-none text-gray-100 transition-all placeholder:text-gray-500 text-base"
+              />
             </div>
-          </motion.div>
-        </div>
+
+            <div className="relative group">
+              <input
+                type="email"
+                name="from_email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Email Address"
+                className="w-full py-3 bg-transparent border-b border-white/20 focus:border-blue-500 outline-none text-gray-100 transition-all placeholder:text-gray-500 text-base"
+              />
+            </div>
+
+            <div className="relative group">
+              <textarea
+                name="message"
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+                placeholder="Tell me about your project"
+                rows={3}
+                className="w-full py-3 bg-transparent border-b border-white/20 focus:border-blue-500 outline-none text-gray-100 transition-all placeholder:text-gray-500 text-base resize-none"
+              />
+            </div>
+
+            <motion.button
+              type="submit"
+              disabled={isSending}
+              className="group relative flex items-center gap-4 text-white font-bold tracking-widest uppercase text-[10px] mt-4 disabled:opacity-50"
+              whileHover={{ x: 5 }}
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: false }}
+            >
+              <span className="w-10 h-px bg-blue-500 group-hover:w-16 transition-all"></span>
+              {isSending ? 'Sending...' : 'Send Message'}
+              <FiSend className={`text-white transition-transform ${isSending ? 'animate-pulse' : 'group-hover:translate-x-2'}`} />
+            </motion.button>
+          </form>
+        </motion.div>
+
       </div>
-    </section>
+    </motion.section>
   )
 }
 

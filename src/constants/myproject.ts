@@ -4,6 +4,7 @@ import SilaharWeb from '../assets/project/SilaharMokup.png';
 import Conference from '../assets/project/ConfrenceMokup.png';
 import Portfolio from '../assets/project/WebPortofolio.png';
 import Sentimeter from '../assets/project/sentimeter.png';
+import SelesReport from '../assets/project/selesreport.png'
 
 export interface Project {
   id: number;
@@ -90,5 +91,18 @@ export const projectsData: Project[] = [
   "githubUrl": "#",
   "featured": false,
   "uploadDate": "2025-11-18"
+},
+{
+  id: 7,
+  title: "Seles Report - Admin Reporting Dashboard",
+  description:
+    "A modern web-based admin dashboard for managing reports, monitoring statistics, and visualizing data insights with a clean and professional UI.",
+  image: SelesReport,
+  category: "web",
+  technologies: ["Next.js", "TypeScript", "Tailwind CSS", "Prisma", "MySQL"],
+  demoUrl: "https://seles-report-hhjj.vercel.app/login",
+  githubUrl: "#",
+  featured: true,
+  uploadDate: "2025-12-26"
 }
 ];

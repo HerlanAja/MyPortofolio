@@ -1,190 +1,93 @@
 "use client"
 
-import { useState } from "react"
-import { motion, AnimatePresence } from "framer-motion"
-import { FiChevronLeft, FiChevronRight, FiStar } from "react-icons/fi"
+import { useState, useEffect } from "react"
+import { motion } from "framer-motion"
 
 interface Testimonial {
   id: number
   name: string
   role: string
   content: string
-  rating: number
-  avatar: string
 }
 
 const testimonials: Testimonial[] = [
   {
     id: 1,
-    name: "Sarah Johnson",
-    role: "CEO, TechSolutions",
-    content: "Working with this team was an absolute pleasure. They delivered our web app ahead of schedule with exceptional quality.",
-    rating: 5,
-    avatar: "https://randomuser.me/api/portraits/women/44.jpg"
+    name: "ALEX RIVERA",
+    role: "FOUNDER, NEXASTREAM",
+    content: "Ujang is an exceptional Fullstack Developer. He built our entire SaaS platform from scratch with incredible efficiency. The code quality is top-notch, and the performance is seamless. Truly a reliable professional."
   },
   {
     id: 2,
-    name: "Michael Chen",
-    role: "Product Manager, InnovateX",
-    content: "The mobile application they developed exceeded all expectations. User engagement increased by 150% since launch.",
-    rating: 4,
-    avatar: "https://randomuser.me/api/portraits/men/32.jpg"
+    name: "SARAH CHEN",
+    role: "PRODUCT MANAGER, TECHFLOW",
+    content: "I was impressed by how Ujang handled both our complex backend architecture and the responsive frontend design. He has a great eye for detail and solved all our technical challenges with ease. Highly recommended!"
   },
   {
     id: 3,
-    name: "Emma Rodriguez",
-    role: "Marketing Director, BrandVision",
-    content: "Outstanding service from start to finish. They turned our vague ideas into a stunning, functional website.",
-    rating: 5,
-    avatar: "https://randomuser.me/api/portraits/women/68.jpg"
-  },
-  {
-    id: 4,
-    name: "David Kim",
-    role: "CTO, DigitalFuture",
-    content: "Their technical expertise and creative approach made all the difference in our project's success.",
-    rating: 5,
-    avatar: "https://randomuser.me/api/portraits/men/22.jpg"
+    name: "MARK THOMPSON",
+    role: "CEO, BRANDLOGIC",
+    content: "Fantastic experience! He delivered a robust API and a stunning user dashboard. Communicative, professional, and always delivers high-quality work on time."
   }
 ]
 
-const TestimonialSlider = () => {
-  const [currentIndex, setCurrentIndex] = useState(0)
-  const [direction, setDirection] = useState<"left" | "right">("right")
+const TestimonialSection = () => {
+  const [isVisible, setIsVisible] = useState(false)
 
-  const nextSlide = () => {
-    setDirection("right")
-    setCurrentIndex((prev) => 
-      prev === testimonials.length - 1 ? 0 : prev + 1
-    )
-  }
-
-  const prevSlide = () => {
-    setDirection("left")
-    setCurrentIndex((prev) => 
-      prev === 0 ? testimonials.length - 1 : prev - 1
-    )
-  }
-
-  const goToSlide = (index: number) => {
-    setDirection(index > currentIndex ? "right" : "left")
-    setCurrentIndex(index)
-  }
-
-  const slideVariants = {
-    hidden: (direction: string) => ({
-      x: direction === "right" ? "100%" : "-100%",
-      opacity: 0
-    }),
-    visible: {
-      x: 0,
-      opacity: 1,
-      transition: {
-        type: "spring",
-        stiffness: 300,
-        damping: 30,
-        duration: 0.5
-      }
-    },
-    exit: (direction: string) => ({
-      x: direction === "right" ? "-100%" : "100%",
-      opacity: 0,
-      transition: {
-        type: "spring",
-        stiffness: 300,
-        damping: 30,
-        duration: 0.5
-      }
-    })
-  }
+  useEffect(() => {
+    setIsVisible(true)
+  }, [])
 
   return (
-    <section id="testimonials" className="w-full py-8 md:py-16 px-4 sm:px-6 overflow-hidden ">
-      <div className="max-w-6xl mx-auto">
-        <motion.div 
-          className="text-center mb-8 md:mb-12"
+    <section id="testimonials" className="relative w-full py-20 px-4 sm:px-6 md:px-10 lg:px-20 max-w-7xl mx-auto overflow-hidden">
+      {/* Container utama menggunakan items-start agar sejajar ke atas */}
+      <div className="flex flex-col lg:flex-row items-start justify-between w-full gap-12 lg:gap-20">
+        
+        {/* Sisi Kiri: Judul (Sticky & Diam) */}
+        <motion.div
           initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
+          animate={isVisible ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.8 }}
+          className="lg:sticky lg:top-10 w-full lg:w-1/2"
         >
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-2 md:mb-4">What Clients Say</h2>
-          <div className="h-px bg-gradient-to-r from-transparent via-indigo-500 to-transparent w-1/2 md:w-1/3 mx-auto" />
+          <div className="flex flex-col">
+            <span className="text-xs font-bold text-blue-500 uppercase tracking-[0.2em] mb-4">
+              Client Feedback
+            </span>
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white leading-tight">
+              Trusted by clients for delivering <span className="text-blue-500">robust digital solutions.</span>
+            </h2>
+          </div>
         </motion.div>
 
-        <div className="relative h-auto min-h-[300px] sm:min-h-[350px] md:h-96">
-          <AnimatePresence custom={direction} mode="wait">
+        {/* Sisi Kanan: List Testimonial (Scrollable tanpa Scrollbar) */}
+        <div 
+          className="w-full lg:w-1/2 flex flex-col gap-10 overflow-y-auto lg:max-h-[550px] scrollbar-hide"
+          style={{ scrollBehavior: 'smooth' }}
+        >
+          {testimonials.map((testimonial, index) => (
             <motion.div
-              key={currentIndex}
-              custom={direction}
-              variants={slideVariants}
-              initial="hidden"
-              animate="visible"
-              exit="exit"
-              className="absolute inset-0 flex items-center justify-center px-2 sm:px-4"
+              key={testimonial.id}
+              initial={{ opacity: 0, y: 30 }}
+              animate={isVisible ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.6, delay: index * 0.15 }}
+              className="group border-b border-white/10 pb-10 last:border-0"
             >
-              <div className="bg-gray-800/50 rounded-xl p-6 sm:p-8 backdrop-blur-sm border border-gray-700 w-full max-w-2xl mx-2 sm:mx-4">
-                <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 sm:gap-6">
-                  <motion.div
-                    className="flex-shrink-0"
-                    whileHover={{ scale: 1.05 }}
-                  >
-                    <img 
-                      src={testimonials[currentIndex].avatar} 
-                      alt={testimonials[currentIndex].name}
-                      className="w-14 h-14 sm:w-16 sm:h-16 rounded-full object-cover border-2 border-indigo-500"
-                    />
-                  </motion.div>
-                  <div className="text-center sm:text-left">
-                    <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 mb-2">
-                      <h3 className="text-lg sm:text-xl font-semibold text-white">
-                        {testimonials[currentIndex].name}
-                      </h3>
-                      <div className="flex justify-center sm:justify-start">
-                        {[...Array(5)].map((_, i) => (
-                          <FiStar 
-                            key={i}
-                            className={`w-3 h-3 sm:w-4 sm:h-4 ${i < testimonials[currentIndex].rating ? 'text-yellow-400 fill-yellow-400' : 'text-gray-600'}`}
-                          />
-                        ))}
-                      </div>
-                    </div>
-                    <p className="text-sm sm:text-base text-gray-400 mb-3 sm:mb-4">
-                      {testimonials[currentIndex].role}
-                    </p>
-                    <p className="text-sm sm:text-base text-gray-300 italic">
-                      "{testimonials[currentIndex].content}"
-                    </p>
-                  </div>
-                </div>
+              {/* Content */}
+              <p className="text-lg md:text-xl text-gray-400 font-normal leading-relaxed mb-6 group-hover:text-gray-200 transition-colors duration-300">
+                "{testimonial.content}"
+              </p>
+              
+              {/* Author Info */}
+              <div className="flex flex-col gap-1">
+                <span className="text-lg font-bold text-white tracking-tight">
+                  {testimonial.name}
+                </span>
+                <span className="text-blue-500 text-xs font-bold uppercase tracking-widest">
+                  {testimonial.role}
+                </span>
               </div>
             </motion.div>
-          </AnimatePresence>
-
-          <button 
-            onClick={prevSlide}
-            className="absolute left-0 top-1/2 -translate-y-1/2 p-1 sm:p-2 rounded-full bg-gray-700 hover:bg-gray-600 text-white z-10 ml-1 sm:ml-4"
-            aria-label="Previous testimonial"
-          >
-            <FiChevronLeft className="w-4 h-4 sm:w-6 sm:h-6" />
-          </button>
-          
-          <button 
-            onClick={nextSlide}
-            className="absolute right-0 top-1/2 -translate-y-1/2 p-1 sm:p-2 rounded-full bg-gray-700 hover:bg-gray-600 text-white z-10 mr-1 sm:mr-4"
-            aria-label="Next testimonial"
-          >
-            <FiChevronRight className="w-4 h-4 sm:w-6 sm:h-6" />
-          </button>
-        </div>
-
-        <div className="flex justify-center gap-2 mt-6 sm:mt-8">
-          {testimonials.map((_, index) => (
-            <button
-              key={index}
-              onClick={() => goToSlide(index)}
-              className={`w-2 h-2 sm:w-3 sm:h-3 rounded-full transition-all ${currentIndex === index ? 'bg-indigo-500 sm:w-6' : 'bg-gray-600'}`}
-              aria-label={`Go to testimonial ${index + 1}`}
-            />
           ))}
         </div>
       </div>
@@ -192,4 +95,4 @@ const TestimonialSlider = () => {
   )
 }
 
-export default TestimonialSlider
+export default TestimonialSection

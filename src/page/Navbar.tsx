@@ -1,63 +1,31 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { FiExternalLink } from 'react-icons/fi';
+import React, { useState, useEffect } from 'react';
+import { FiExternalLink, FiMenu, FiX } from 'react-icons/fi';
 import { motion, AnimatePresence } from 'framer-motion';
 import Logo from '../assets/Logo.png';
 
 const navLinks = [
-  { name: 'About', path: '#about', isAnchor: true },
-  { name: 'Services', path: '#services', isAnchor: true },
-  { name: 'Skill', path: '#skils', isAnchor: true },
-  { name: 'Projects', path: '#projects', isAnchor: true },
-  { name: 'Testimonial', path: '#testimonials', isAnchor: true },
-  { name: 'Contact', path: '#contact', isAnchor: true },
+  { name: 'About', path: '#about' },
+  { name: 'Services', path: '#services' },
+  { name: 'Projects', path: '#projects' },
+  { name: 'Testimonial', path: '#testimonials' },
+  { name: 'Contact', path: '#contact' },
 ];
 
 const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
 
-  const menuVariants = {
-    open: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        staggerChildren: 0.1,
-        delayChildren: 0.2,
-        when: 'beforeChildren',
-      },
-    },
-    closed: {
-      opacity: 0,
-      y: -20,
-      transition: {
-        when: 'afterChildren',
-      },
-    },
-  };
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
-  const itemVariants = {
-    open: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.3,
-        ease: 'easeOut',
-      },
-    },
-    closed: {
-      opacity: 0,
-      y: -10,
-      transition: {
-        duration: 0.2,
-      },
-    },
-  };
-
-/*************  ✨ Windsurf Command ⭐  *************/
-/*******  f293eda0-4053-45c9-bdd6-7c726cb9fe15  *******/
   const handleHireMeClick = () => {
     const link = document.createElement('a');
-    link.href = '/CV-UjangHerlan-Update.pdf'; // updated path to public root
+    link.href = '/CV-UjangHerlan-Update.pdf';
     link.download = 'CV-UjangHerlan-Update.pdf';
     link.click();
   };
@@ -68,131 +36,99 @@ const Navbar: React.FC = () => {
     if (target) {
       target.scrollIntoView({ behavior: 'smooth' });
     }
-    setIsOpen(false); // close menu on click
+    setIsOpen(false);
   };
 
   return (
-    <nav className="fixed top-5 left-1/2 transform -translate-x-1/2 z-50 w-[95%] md:w-[90%] lg:w-[80%] px-6 py-3 bg-gray-900/80 backdrop-blur-xl rounded-full flex items-center justify-between shadow-md border border-white/10">
-      {/* Logo */}
-      <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center">
-        <img src={Logo} alt="Logo" className="w-6 h-6 object-contain" />
+    <nav className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ${
+      scrolled ? 'py-3 bg-slate-950/80 backdrop-blur-xl border-b border-white/5 shadow-2xl' : 'py-6 bg-transparent'
+    }`}>
+      <div className="max-w-7xl mx-auto px-6 md:px-12 flex items-center justify-between relative">
+        
+        {/* Logo */}
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex items-center gap-3 shrink-0">
+          <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-600 p-2 shadow-lg shadow-blue-500/20">
+            <img src={Logo} alt="Logo" className="w-full h-full object-contain brightness-0 invert" />
+          </div>
+          <span className="text-white font-bold text-xl tracking-tighter">UHE.</span>
+        </motion.div>
+
+        {/* Desktop Menu - Tengah */}
+        <div className="hidden md:flex absolute left-1/2 -translate-x-1/2 items-center">
+          <ul className="flex items-center gap-8">
+            {navLinks.map((link) => (
+              <li key={link.name}>
+                <a
+                  href={link.path}
+                  onClick={(e) => handleAnchorClick(e, link.path)}
+                  className="text-gray-400 hover:text-white text-sm font-medium transition-all duration-300 hover:tracking-wide"
+                >
+                  {link.name}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        {/* Desktop Hire Me - Kanan */}
+        <div className="hidden md:block shrink-0">
+          <button
+            onClick={handleHireMeClick}
+            className="flex items-center gap-2 bg-white text-slate-950 px-5 py-2 rounded-full font-bold text-sm hover:bg-blue-400 transition-all transform hover:scale-105 active:scale-95 shadow-lg"
+          >
+            Hire Me <FiExternalLink size={14} />
+          </button>
+        </div>
+
+        {/* Mobile Toggle */}
+        <button className="md:hidden text-white p-2" onClick={() => setIsOpen(!isOpen)}>
+          {isOpen ? <FiX size={28} /> : <FiMenu size={28} />}
+        </button>
       </div>
 
-      {/* Desktop Navigation */}
-      <ul className="hidden md:flex items-center space-x-8 font-medium text-white">
-        {navLinks.map((link) => (
-          <li key={link.name}>
-            {link.isAnchor ? (
-              <a
-                href={link.path}
-                className="relative group hover:text-gray-300 transition duration-200"
-                onClick={(e) => handleAnchorClick(e, link.path)}
-              >
-                {link.name}
-                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-white group-hover:w-full transition-all duration-300"></span>
-              </a>
-            ) : (
-              <Link
-                to={link.path}
-                className="relative group hover:text-gray-300 transition duration-200"
-              >
-                {link.name}
-                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-white group-hover:w-full transition-all duration-300"></span>
-              </Link>
-            )}
-          </li>
-        ))}
-      </ul>
-
-      {/* Desktop Hire Me Button */}
-      <button
-        onClick={handleHireMeClick}
-        className="hidden md:flex items-center space-x-2 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-4 py-2 rounded-full font-medium transition-all duration-200 shadow-lg"
-      >
-        <span>Hire Me</span>
-        <FiExternalLink size={16} />
-      </button>
-
-      {/* Mobile Hamburger Button */}
-      <button
-        className="md:hidden flex flex-col items-center justify-center w-10 h-10 relative focus:outline-none bg-gray-800/80 backdrop-blur rounded-full shadow-lg hover:bg-gray-700/80 transition-colors duration-200"
-        onClick={() => setIsOpen(!isOpen)}
-        aria-label="Menu"
-      >
-        <motion.span
-          className="w-6 h-0.5 bg-white mb-1.5"
-          animate={isOpen ? { rotate: 45, y: 6 } : { rotate: 0, y: 0 }}
-          transition={{ duration: 0.3 }}
-        />
-        <motion.span
-          className="w-6 h-0.5 bg-white"
-          animate={isOpen ? { rotate: -45, y: -6 } : { rotate: 0, y: 0 }}
-          transition={{ duration: 0.3 }}
-        />
-      </button>
-
-      {/* Mobile Menu */}
+      {/* Mobile Menu Overlay */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            // Hapus atau ganti `pt-24` dengan `top-0` atau `top-5` jika ingin sejajar dengan navbar
-            // Jika ingin menempel persis di bawah navbar utama saat terbuka, bisa gunakan `top-[calc(theme('spacing.5')+theme('spacing.12'))]` atau sesuaikan
-            // Untuk menempel ke atas layar: `className="fixed inset-0 z-50 px-6"`
-            // Atau untuk sedikit jarak dari atas: `className="fixed top-1/2 transform -translate-y-1/2 z-50 px-6"`
-            // Pilihan terbaik adalah `fixed inset-0 z-50 flex justify-center items-start pt-24 md:pt-0`
-            // ATAU untuk rapat ke atas, hapus `pt-24` dan biarkan posisi `motion.ul` yang mengatur
-            className="fixed inset-0 z-50 px-6" // Menghapus `pt-24` dan biarkan `motion.ul` yang mengatur posisinya
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
-            onClick={() => setIsOpen(false)} // Menutup menu ketika area di luar menu diklik
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            className="fixed inset-0 bg-slate-950 z-[60] flex flex-col p-8 md:hidden"
           >
-            <motion.ul
-              className="container mx-auto max-w-md bg-gray-900/90 backdrop-blur-lg rounded-lg shadow-xl border border-white/10 p-6 mt-20" // Menambahkan `mt-20` atau nilai lain yang sesuai agar drawer muncul di bawah navbar
-              variants={menuVariants}
-              initial="closed"
-              animate="open"
-              exit="closed"
-              onClick={(e) => e.stopPropagation()} // Mencegah penutupan menu ketika item menu diklik
-            >
-              {navLinks.map((link) => (
-                <motion.li
+            <div className="flex justify-between items-center mb-10">
+              <span className="text-blue-500 font-bold text-xl uppercase tracking-widest">Navigation</span>
+              <button onClick={() => setIsOpen(false)} className="text-white p-2"><FiX size={30} /></button>
+            </div>
+            
+            <ul className="flex flex-col gap-5">
+              {navLinks.map((link, i) => (
+                <motion.li 
                   key={link.name}
-                  variants={itemVariants}
-                  whileHover={{ x: 5 }}
-                  className="border-b border-white/10 last:border-0"
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: i * 0.05 }}
                 >
-                  {link.isAnchor ? (
-                    <a
-                      href={link.path}
-                      className="block py-4 text-white text-xl font-medium hover:text-purple-400 transition duration-200"
-                      onClick={(e) => handleAnchorClick(e, link.path)}
-                    >
-                      {link.name}
-                    </a>
-                  ) : (
-                    <Link
-                      to={link.path}
-                      className="block py-4 text-white text-xl font-medium hover:text-purple-400 transition duration-200"
-                      onClick={() => setIsOpen(false)}
-                    >
-                      {link.name}
-                    </Link>
-                  )}
+                  <a
+                    href={link.path}
+                    onClick={(e) => handleAnchorClick(e, link.path)}
+                    // UKURAN TEKS DIKECILKAN: Dari text-4xl menjadi text-2xl
+                    className="text-2xl font-bold text-white hover:text-blue-500 transition-colors"
+                  >
+                    {link.name}
+                  </a>
                 </motion.li>
               ))}
+            </ul>
 
-              <motion.li variants={itemVariants} className="mt-6">
-                <button
-                  onClick={handleHireMeClick}
-                  className="inline-flex items-center space-x-2 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-6 py-3 rounded-full font-medium transition-all duration-200 shadow-lg text-lg"
-                >
-                  <span>Hire Me</span>
-                  <FiExternalLink size={18} />
-                </button>
-              </motion.li>
-            </motion.ul>
+            <div className="mt-auto">
+              <button
+                onClick={handleHireMeClick}
+                // UKURAN TOMBOL DI SESUAIKAN
+                className="w-full bg-blue-600 text-white py-4 rounded-xl font-bold text-lg flex items-center justify-center gap-3 shadow-xl"
+              >
+                Download CV <FiExternalLink size={18} />
+              </button>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
