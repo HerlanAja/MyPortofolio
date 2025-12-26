@@ -10,7 +10,7 @@ const About: React.FC = () => {
     'Go', 'Laravel'
   ];
 
-  // Variants untuk Kontainer Utama (Fade In/Out saat scroll)
+  // Variants untuk Kontainer Utama
   const sectionVariants = {
     hidden: { opacity: 0, y: 50 },
     visible: { 
@@ -20,7 +20,7 @@ const About: React.FC = () => {
     }
   };
 
-  // Variants untuk Stagger Children (Efek muncul berurutan)
+  // Variants untuk Stagger Children
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -46,8 +46,8 @@ const About: React.FC = () => {
       id="about" 
       variants={sectionVariants}
       initial="hidden"
-      whileInView="visible" // Memicu animasi saat masuk area viewport
-      viewport={{ once: false, amount: 0.3 }} // once: false agar bisa fade out saat keluar dan fade in kembali
+      whileInView="visible"
+      viewport={{ once: false, amount: 0.3 }}
       className="relative text-white py-24 px-4 sm:px-6 md:px-10 lg:px-20 max-w-7xl mx-auto overflow-hidden"
     >
       
@@ -83,7 +83,8 @@ const About: React.FC = () => {
             <h3 className="text-xl font-semibold text-white mb-6">
               I'm Ujang Herlan, a Full Stack Developer
             </h3>
-            <div className="space-y-6 text-gray-400 text-base leading-relaxed">
+            {/* PERBAIKAN: Menambahkan text-justify pada mobile, dan text-left pada desktop (lg) */}
+            <div className="space-y-6 text-gray-400 text-base leading-relaxed text-justify lg:text-left">
               <p>
                 Experienced Full Stack Developer with a passion for creating dynamic, intuitive, and responsive applications. 
                 Proficient in multiple programming languages and frameworks, as well as database design and management.
